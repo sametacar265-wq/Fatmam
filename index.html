@@ -1092,6 +1092,66 @@ try {
 
 </script>
 
+<style>
+#miniMusicButton {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 9999;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid #ffffff80;
+  border-radius: 50%;
+  background: #d96b9c;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0002;
+}
+#miniMusicFrame {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  right: 0;
+  bottom: 0;
+}
+</style>
+
+<button id="miniMusicButton" aria-label="Müziği aç veya durdur">
+  🎵
+</button>
+
+<iframe
+  id="miniMusicFrame"
+  allow="autoplay; encrypted-media"
+  src="about:blank"
+></iframe>
+
+<script>
+(() => {
+  const button = document.getElementById("miniMusicButton");
+  const frame = document.getElementById("miniMusicFrame");
+  let playing = false;
+
+  button.addEventListener("click", () => {
+    playing = !playing;
+
+    frame.src = playing
+      ? "https://www.youtube-nocookie.com/embed/p3-OyMmUQ0w?autoplay=1"
+      : "about:blank";
+
+    button.textContent = playing ? "⏸" : "🎵";
+    button.setAttribute(
+      "aria-label",
+      playing ? "Müziği durdur" : "Müziği aç"
+    );
+  });
+})();
+</script>
+
 </body>
 
 </html>
