@@ -198,11 +198,97 @@ button:focus-visible {
     text-align: center;
 }
 
-.photo-empty {
+/* FOTOĞRAF GALERİSİ */
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.photo-gallery img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid white;
+    box-shadow: 0 5px 15px #70475b30;
+    cursor: pointer;
+    transition: transform 0.25s;
+}
+
+.photo-gallery img:hover {
+    transform: scale(1.03);
+}
+
+.gallery-caption {
     text-align: center;
-    padding: 60px 10px;
-    color: #8a6678;
-    font-size: 19px;
+    font-style: italic;
+    margin-top: 20px;
+    line-height: 1.7;
+    color: #8a3560;
+}
+
+/* BÜYÜK FOTOĞRAF EKRANI */
+.photo-viewer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(25, 12, 22, 0.94);
+    align-items: center;
+    justify-content: center;
+    padding: 60px 55px;
+}
+
+.photo-viewer.open {
+    display: flex;
+}
+
+.photo-viewer img {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.photo-viewer button {
+    position: absolute;
+    color: white;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid #ffffff70;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 18px;
+}
+
+.photo-viewer .photo-close {
+    top: 12px;
+    right: 12px;
+    font-size: 24px;
+}
+
+.photo-viewer .photo-prev {
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.photo-viewer .photo-next {
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.photo-counter {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    color: white;
+    text-align: center;
+    font-size: 15px;
 }
 
 .daily-title {
@@ -277,14 +363,26 @@ footer {
     .poem {
         font-size: 17px;
     }
+
+    .photo-gallery {
+        gap: 9px;
+    }
+
+    .photo-gallery img {
+        height: 170px;
+    }
+
+    .photo-viewer {
+        padding: 55px 42px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
 </style>
@@ -320,11 +418,51 @@ footer {
     <!-- FOTOĞRAFLAR -->
     <section id="photos" class="page">
         <button class="back-button" onclick="goBack()">← Geri dön</button>
-        <h2 class="page-title">📸 Fotoğraflarımız</h2>
+        <h2 class="page-title">📸 Fotoğraflarımız ❤️</h2>
 
-        <div class="content-card photo-empty">
-            ❤️
-            <p>En güzel anılarımız burada birikecek...</p>
+        <div class="content-card">
+            <div class="photo-gallery">
+
+                <img
+                    src="3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png"
+                    alt="Anımız 1"
+                    loading="lazy"
+                    onclick="openPhoto(0)"
+                >
+
+                <img
+                    src="5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg"
+                    alt="Anımız 2"
+                    loading="lazy"
+                    onclick="openPhoto(1)"
+                >
+
+                <img
+                    src="671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png"
+                    alt="Anımız 3"
+                    loading="lazy"
+                    onclick="openPhoto(2)"
+                >
+
+                <img
+                    src="E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg"
+                    alt="Anımız 4"
+                    loading="lazy"
+                    onclick="openPhoto(3)"
+                >
+
+                <img
+                    src="IMG_2794.jpeg"
+                    alt="Anımız 5"
+                    loading="lazy"
+                    onclick="openPhoto(4)"
+                >
+
+            </div>
+
+            <p class="gallery-caption">
+                Her fotoğraf, seninle güzel bir anı... ❤️
+            </p>
         </div>
     </section>
 
@@ -347,7 +485,7 @@ Bütün dünya bir anlığına durar.
 Adını rüzgâra fısıldadım bu gece,
 Yıldızlar senin gibi gülümsedi bana.
 Ömrümün en güzel mevsimi,
-Anladım ki sen geldiğin gün başladı
+Anladım ki sen geldiğin gün başladı.
             </article>
 
             <article class="poem">
@@ -440,10 +578,95 @@ Aklımı başımdan alan o tek imzamsın.</p>
 
 </main>
 
+<!-- FOTOĞRAFI BÜYÜK GÖSTER -->
+<div
+    id="photoViewer"
+    class="photo-viewer"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Fotoğraf görüntüleyici"
+    onclick="if(event.target === this) closePhoto()"
+>
+    <button
+        class="photo-close"
+        onclick="closePhoto()"
+        aria-label="Kapat"
+    >✕</button>
+
+    <button
+        class="photo-prev"
+        onclick="changePhoto(-1)"
+        aria-label="Önceki fotoğraf"
+    >❮</button>
+
+    <img id="largePhoto" src="" alt="Büyük fotoğraf">
+
+    <button
+        class="photo-next"
+        onclick="changePhoto(1)"
+        aria-label="Sonraki fotoğraf"
+    >❯</button>
+
+    <div id="photoCounter" class="photo-counter">1 / 5</div>
+</div>
+
 <script>
-// SAYFALAR ARASI GEÇİŞ
+/* FOTOĞRAF LİSTESİ */
+const photoFiles = [
+    "3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png",
+    "5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg",
+    "671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png",
+    "E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg",
+    "IMG_2794.jpeg"
+];
+
+let currentPhoto = 0;
+
+function openPhoto(index) {
+    currentPhoto = index;
+    showLargePhoto();
+
+    document.getElementById("photoViewer").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+
+function showLargePhoto() {
+    const image = document.getElementById("largePhoto");
+
+    image.src = photoFiles[currentPhoto];
+    image.alt = "Fotoğraf " + (currentPhoto + 1);
+
+    document.getElementById("photoCounter").textContent =
+        (currentPhoto + 1) + " / " + photoFiles.length;
+}
+
+function changePhoto(direction) {
+    currentPhoto =
+        (currentPhoto + direction + photoFiles.length)
+        % photoFiles.length;
+
+    showLargePhoto();
+}
+
+function closePhoto() {
+    document.getElementById("photoViewer").classList.remove("open");
+    document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", function(event) {
+    if (!document.getElementById("photoViewer").classList.contains("open")) {
+        return;
+    }
+
+    if (event.key === "Escape") closePhoto();
+    if (event.key === "ArrowRight") changePhoto(1);
+    if (event.key === "ArrowLeft") changePhoto(-1);
+});
+
+/* SAYFALAR ARASI GEÇİŞ */
 function openPage(pageId) {
     const target = document.getElementById(pageId);
+
     if (!target || !target.classList.contains("page")) return;
 
     history.pushState({ page: pageId }, "", "#" + pageId);
@@ -483,7 +706,7 @@ window.addEventListener("popstate", event => {
     showPage(pageId);
 });
 
-// SAYFA DOĞRUDAN AÇILIRSA
+/* SAYFA DOĞRUDAN AÇILIRSA */
 (function initializePage() {
     const pageId = window.location.hash.slice(1);
     const target = document.getElementById(pageId);
@@ -497,7 +720,7 @@ window.addEventListener("popstate", event => {
     }
 })();
 
-// DÜŞEN KALPLER
+/* DÜŞEN KALPLER */
 const heartContainer = document.getElementById("hearts");
 const heartSymbols = ["❤️", "💕", "💗", "💖", "♥"];
 
@@ -514,6 +737,7 @@ function createHeart() {
     heart.style.opacity = (0.3 + Math.random() * 0.5).toString();
 
     heartContainer.appendChild(heart);
+
     heart.addEventListener("animationend", () => heart.remove());
 }
 
@@ -523,7 +747,7 @@ for (let i = 0; i < 18; i++) {
 
 setInterval(createHeart, 650);
 
-// GÜNLÜĞÜ YÜKLE
+/* GÜNLÜĞÜ YÜKLE */
 function loadDiary() {
     try {
         document.getElementById("fatmaDiary").value =
@@ -537,7 +761,7 @@ function loadDiary() {
     }
 }
 
-// GÜNLÜĞÜ KAYDET
+/* GÜNLÜĞÜ KAYDET */
 function saveDiary() {
     const message = document.getElementById("saveMessage");
 
