@@ -1,734 +1,1097 @@
+ 
 
 <!DOCTYPE html>
+
 <html lang="tr">
+
 <head>
+
 <meta charset="UTF-8">
-<m"viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="theme-color" content="#e8a9c5">
+
 <title>❤️ FATMAM ❤️</title>
 
 <style>
+
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{min-height:100vh;font-family:Georgia,serif;color:#493442;background:linear-gradient(135deg,#f8c8dc,#d6d6dc,#edb2ca,#bcbcc6);background-size:300% 300%;animation:backgroundMove 12s ease infinite;overflow-x:hidden}
+
 @keyframes backgroundMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
 #hearts{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+
 .heart{position:absolute;top:-50px;color:rgba(221,65,133,.55);animation:fall linear forwards;user-select:none}
+
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}
+
 main{position:relative;z-index:1;width:min(900px,92%);margin:auto;padding:35px 0 50px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+
 .page{display:none;animation:appear .5s ease}
+
 .page.active{display:block}
+
 @keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
 .home{text-align:center}
+
 .small-heart{font-size:35px;margin-bottom:12px;animation:pulse 1.5s infinite}
+
 @keyframes pulse{50%{transform:scale(1.18)}}
+
 h1{font-size:clamp(38px,9vw,68px);color:#b82e70;text-shadow:2px 3px 12px #ffffffa8;margin-bottom:24px;letter-spacing:2px}
+
 .quote{max-width:650px;margin:0 auto 35px;font-size:clamp(18px,4vw,25px);line-height:1.8;font-style:italic;color:#51414b}
+
 .menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:600px;margin:auto}
+
 .menu button{min-height:95px;font-size:clamp(17px,3.5vw,22px);font-weight:bold}
+
 button{font-family:inherit;border:1px solid #ffffffa6;border-radius:20px;padding:17px;cursor:pointer;color:#773c5a;background:rgba(255,255,255,.67);box-shadow:0 6px 20px #6f3c5220;transition:transform .25s,background .25s}
+
 button:hover{transform:translateY(-3px);background:#fff0f7}
+
 button:focus-visible{outline:3px solid #a92e69;outline-offset:3px}
+
 button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
 .page-title{text-align:center;color:#ad356d;font-size:clamp(30px,7vw,43px);margin:10px 0 25px}
+
 .back-button{display:block;margin:0 auto 24px 0;padding:12px 20px;font-size:16px}
+
 .content-card{width:100%;padding:clamp(20px,5vw,35px);border:1px solid #ffffffa8;border-radius:24px;background:rgba(255,255,255,.76);box-shadow:0 10px 35px #70475b20;backdrop-filter:blur(8px)}
-.poem{text-align:center;white-space:pre-line;overflow-wrap:anywhere;font-size:18px;line-height:1.9;margin-bottom:28px;padding-bottom:25px;border-bottom:1px solid #e8c3d4}
-.poem:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.poem h3{color:#bd427c;font-size:21px;margin-bottom:12px}
-.poem p{white-space:pre-line;text-align:center}
+
+.poem-card,.acrostic-card{overflow:hidden}
+
+.poem-slide,.acrostic-slide{min-height:330px;display:flex;flex-direction:column;justify-content:center;animation:appear .35s ease}
+
+.poem-slide h3,.acrostic-slide h3{text-align:center;color:#bd427c;font-size:clamp(21px,5vw,26px);margin:12px 0 22px}
+
+.poem-slide p{white-space:pre-line;text-align:center;overflow-wrap:anywhere;font-size:clamp(16px,4vw,20px);line-height:1.9}
+
+.poem-navigation,.acrostic-navigation{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:25px;padding-top:20px;border-top:1px solid #e8c3d4}
+
+.poem-navigation button,.acrostic-navigation button{width:58px;min-height:52px;font-size:22px;background:#f7d5e5;border-radius:16px;padding:10px}
+
+#poemCounter,#acrosticCounter{color:#ad356d;font-weight:bold;font-size:17px}
+
+.poem-hint,.acrostic-hint{text-align:center;font-style:italic;font-size:14px;color:#8a3560;margin-top:18px}
+
 .photo-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+
 .photo-gallery img{display:block;width:100%;height:220px;object-fit:cover;border-radius:16px;border:2px solid white;box-shadow:0 5px 15px #70475b30;cursor:pointer;transition:transform .25s}
+
 .photo-gallery img:hover{transform:scale(1.03)}
+
 .gallery-caption{text-align:center;font-style:italic;margin-top:20px;line-height:1.7;color:#8a3560}
+
 .upload-area{text-align:center;margin-bottom:22px}
+
 .upload-button{display:block;width:100%;background:#d96b9c;color:white;font-size:17px;font-weight:bold}
+
 .upload-help{font-size:14px;line-height:1.6;margin-top:10px;color:#8a3560}
+
 .upload-status{text-align:center;margin-top:12px;font-size:14px;line-height:1.6;color:#8a3560;overflow-wrap:anywhere}
+
 .photo-viewer{display:none;position:fixed;inset:0;z-index:9999;background:rgba(25,12,22,.94);align-items:center;justify-content:center;padding:60px 55px}
+
 .photo-viewer.open{display:flex}
+
 .photo-viewer img{display:block;max-width:100%;max-height:78vh;object-fit:contain;border-radius:12px}
+
 .photo-viewer button{position:absolute;color:white;background:rgba(255,255,255,.18);border:1px solid #ffffff70;padding:10px 14px;border-radius:12px;font-size:18px}
+
 .photo-viewer .photo-close{top:12px;right:12px;font-size:24px}
+
 .photo-viewer .photo-prev{left:8px;top:50%;transform:translateY(-50%)}
+
 .photo-viewer .photo-next{right:8px;top:50%;transform:translateY(-50%)}
+
 .photo-counter{position:absolute;bottom:15px;left:0;right:0;color:white;text-align:center;font-size:15px}
+
 .daily-title{display:block;color:#b63c76;font-size:21px;margin:12px 0}
+
 .diary-input{display:block;width:100%;min-height:180px;margin:12px 0 25px;padding:16px;border:1px solid #e8b3cb;border-radius:15px;background:#fffafd;color:#493442;font:16px/1.7 Georgia,serif;resize:vertical}
+
 .diary-input:focus{outline:2px solid #d96b9c;border-color:transparent}
+
 .save-button{display:block;width:100%;background:#d96b9c;color:white;font-size:17px;font-weight:bold}
+
 .save-message{margin-top:14px;text-align:center;color:#8a3560;line-height:1.6}
-.acrostic-card{overflow:hidden}
-.acrostic-slide{min-height:330px;display:flex;flex-direction:column;justify-content:center;animation:appear .35s ease}
-.acrostic-slide h3{text-align:center;color:#bd427c;font-size:clamp(20px,5vw,25px);margin:12px 0 22px}
+
 .acrostic-line{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:start;text-align:left;margin:11px auto;width:100%;max-width:470px;font-size:clamp(15px,3.8vw,18px);line-height:1.7;overflow-wrap:anywhere}
+
 .acrostic-letter{color:#bd427c;font-size:21px;font-weight:bold;text-align:center}
-.acrostic-navigation{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:25px;padding-top:20px;border-top:1px solid #e8c3d4}
-.acrostic-navigation button{width:58px;min-height:52px;font-size:22px;background:#f7d5e5;border-radius:16px;padding:10px}
-#acrosticCounter{color:#ad356d;font-weight:bold;font-size:17px}
-.acrostic-hint{text-align:center;font-style:italic;font-size:14px;color:#8a3560;margin-top:18px}
+
 footer{text-align:center;padding-top:35px;font-size:14px;color:#70485c}
+
 @media(max-width:480px){
+
 main{width:91%;padding-top:25px}
+
 .menu{gap:12px}
+
 .menu button{min-height:85px;padding:12px 6px;border-radius:16px}
+
 .content-card{padding:20px 15px}
-.poem{font-size:17px}
+
 .photo-gallery{gap:9px}
+
 .photo-gallery img{height:170px}
+
 .photo-viewer{padding:55px 42px}
-.acrostic-slide{min-height:350px}
+
+.acrostic-slide,.poem-slide{min-height:350px}
+
 .acrostic-line{gap:5px}
+
 }
+
 @media(prefers-reduced-motion:reduce){
+
 *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+
 }
+
 </style>
+
 </head>
 
 <body>
+
 <div id="hearts" aria-hidden="true"></div>
+
 <main>
 
 <section id="home" class="page active home">
+
 <div class="small-heart">❤️</div>
+
 <h1>❤️ FATMAM ❤️</h1>
-<p class="quote">
-Bu dünyada binlerce yol var,<br>
-ama kalbim her seferinde sana çıkıyor,<br>
-Fatmam. ❤️
-</p>
+
+<p class="quote">Bu dünyada binlerce yol var,<br>ama kalbim her seferinde sana çıkıyor,<br>Fatmam. ❤️</p>
+
 <nav class="menu" aria-label="Site menüsü">
+
 <button onclick="openPage('photos')">📸<br>Fotoğraflar</button>
+
 <button onclick="openPage('poems')">📜<br>Şiirler</button>
+
 <button onclick="openPage('acrostics')">📝<br>Akrostişler</button>
+
 <button onclick="openPage('diary')">📖<br>Günlük</button>
+
 </nav>
+
 <footer>Bir kalp, bir isim, kocaman bir sevgi... ❤️</footer>
+
 </section>
 
 <section id="photos" class="page">
+
 <button class="back-button" onclick="goBack()">← Geri dön</button>
+
 <h2 class="page-title">📸 Fotoğraflarımız ❤️</h2>
+
 <div class="content-card">
+
 <div class="upload-area">
+
 <button id="uploadButton" class="upload-button">➕ Fotoğraf Ekle ❤️</button>
+
 <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+
 <p class="upload-help">Telefonundan bir fotoğraf seçebilirsin. Eklenen fotoğraflar ortak galeride görünür. ❤️</p>
+
 <p id="uploadStatus" class="upload-status" aria-live="polite">Fotoğraf bağlantısı hazırlanıyor...</p>
+
 </div>
+
 <div id="photoGallery" class="photo-gallery"></div>
+
 <p class="gallery-caption">Her fotoğraf, seninle güzel bir anı... ❤️</p>
+
 </div>
+
 </section>
 
 <section id="poems" class="page">
+
 <button class="back-button" onclick="goBack()">← Geri dön</button>
-<h2 class="page-title">📜 Sana Yazdığım Şiirler</h2>
-<div class="content-card">
-<article class="poem">
-<h3>Bir Tebessümün</h3>
-Bir tebessümün yeter,
-Karanlık geceme güneş doğar.
-Sen elimi tuttuğunda,
-Bütün dünya bir anlığına durar.
-</article>
-<article class="poem">
-<h3>En Güzel Mevsimim</h3>
-Adını rüzgâra fısıldadım bu gece,
-Yıldızlar senin gibi gülümsedi bana.
-Ömrümün en güzel mevsimi,
-Anladım ki sen geldiğin gün başladı.
-</article>
-<article class="poem">
-<h3>Her Zaman</h3>
-Kalbim seninle çarpmayı öğrendi,
-Gözlerin gözlerime değdiği an.
-Sözler tükense bile içimde,
-Seni seveceğim her zaman.
-</article>
+
+<h2 class="page-title">📜 Sana Yazdığım Şiirler ❤️</h2>
+
+<div class="content-card poem-card">
+
+<div id="poemContent"></div>
+
+<div class="poem-navigation">
+
+<button id="previousPoem" onclick="changePoem(-1)" aria-label="Önceki şiir">⬅️</button>
+
+<span id="poemCounter">1 / 30</span>
+
+<button id="nextPoem" onclick="changePoem(1)" aria-label="Sonraki şiir">➡️</button>
+
 </div>
+
+<p class="poem-hint">Her şiirim sana, her sözüm aşkımıza... ❤️</p>
+
+</div>
+
 </section>
 
 <section id="acrostics" class="page">
+
 <button class="back-button" onclick="goBack()">← Geri dön</button>
+
 <h2 class="page-title">📝 Fatmam'a Akrostişler ❤️</h2>
+
 <div class="content-card acrostic-card">
+
 <div id="acrosticContent"></div>
+
 <div class="acrostic-navigation">
+
 <button id="previousAcrostic" onclick="changeAcrostic(-1)" aria-label="Önceki akrostiş">⬅️</button>
+
 <span id="acrosticCounter">1 / 30</span>
+
 <button id="nextAcrostic" onclick="changeAcrostic(1)" aria-label="Sonraki akrostiş">➡️</button>
+
 </div>
+
 <p class="acrostic-hint">Her harfte sen, her satırda aşkımız... ❤️</p>
+
 </div>
+
 </section>
 
 <section id="diary" class="page">
+
 <button class="back-button" onclick="goBack()">← Geri dön</button>
+
 <h2 class="page-title">📖 Bizim Günlüğümüz</h2>
+
 <div class="content-card">
+
 <label class="daily-title" for="fatmaDiary">💗 Fatma'nın Günlüğü</label>
+
 <textarea id="fatmaDiary" class="diary-input" placeholder="Fatma'nın düşüncelerini buraya yaz..."></textarea>
+
 <label class="daily-title" for="sametDiary">💙 Samet'in Günlüğü</label>
+
 <textarea id="sametDiary" class="diary-input" placeholder="Samet'in düşüncelerini buraya yaz..."></textarea>
+
 <button class="save-button" id="saveDiaryButton">💾 Günlüğü Kaydet</button>
+
 <p id="saveMessage" class="save-message" aria-live="polite">Günlük bağlantısı kuruluyor...</p>
+
 </div>
+
 </section>
+
 </main>
 
 <div id="photoViewer" class="photo-viewer" role="dialog" aria-modal="true" aria-label="Fotoğraf görüntüleyici" onclick="if(event.target === this) closePhoto()">
+
 <button class="photo-close" onclick="closePhoto()" aria-label="Kapat">✕</button>
+
 <button class="photo-prev" onclick="changePhoto(-1)" aria-label="Önceki fotoğraf">❮</button>
+
 <img id="largePhoto" src="" alt="Büyük fotoğraf">
+
 <button class="photo-next" onclick="changePhoto(1)" aria-label="Sonraki fotoğraf">❯</button>
+
 <div id="photoCounter" class="photo-counter">1 / 5</div>
+
 </div>
 
 <script>
+
 const originalPhotoFiles = [
+
 "3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png",
+
 "5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg",
+
 "671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png",
+
 "E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg",
+
 "IMG_2794.jpeg"
+
 ];
 
 let onlinePhotoFiles = [];
+
 let photoFiles = [...originalPhotoFiles];
+
 let currentPhoto = 0;
 
 function renderGallery() {
-const gallery = document.getElementById("photoGallery");
-gallery.replaceChildren();
 
-photoFiles.forEach((url, index) => {
-const img = document.createElement("img");
-img.src = url;
-img.alt = "Anımız " + (index + 1);
-img.loading = "lazy";
-img.addEventListener("click", () => openPhoto(index));
-img.onerror = () => { img.alt = "Fotoğraf yüklenemedi"; };
-gallery.appendChild(img);
-});
+  const gallery = document.getElementById("photoGallery");
+
+  gallery.replaceChildren();
+
+  photoFiles.forEach((url, index) => {
+
+    const img = document.createElement("img");
+
+    img.src = url;
+
+    img.alt = "Anımız " + (index + 1);
+
+    img.loading = "lazy";
+
+    img.addEventListener("click", () => openPhoto(index));
+
+    img.onerror = () => { img.alt = "Fotoğraf yüklenemedi"; };
+
+    gallery.appendChild(img);
+
+  });
+
 }
 
 window.setOnlinePhotos = function(photos) {
-onlinePhotoFiles = photos;
-photoFiles = [...originalPhotoFiles, ...onlinePhotoFiles.map(photo => photo.url)];
-renderGallery();
 
-if (document.getElementById("photoViewer").classList.contains("open")) {
-currentPhoto = Math.min(currentPhoto, Math.max(0, photoFiles.length - 1));
-showLargePhoto();
-}
+  onlinePhotoFiles = photos;
+
+  photoFiles = [...originalPhotoFiles, ...onlinePhotoFiles.map(photo => photo.url)];
+
+  renderGallery();
+
+  if (document.getElementById("photoViewer").classList.contains("open")) {
+
+    currentPhoto = Math.min(currentPhoto, Math.max(0, photoFiles.length - 1));
+
+    showLargePhoto();
+
+  }
+
 };
 
 function openPhoto(index) {
-currentPhoto = index;
-showLargePhoto();
-document.getElementById("photoViewer").classList.add("open");
-document.body.style.overflow = "hidden";
+
+  currentPhoto = index;
+
+  showLargePhoto();
+
+  document.getElementById("photoViewer").classList.add("open");
+
+  document.body.style.overflow = "hidden";
+
 }
 
 function showLargePhoto() {
-if (!photoFiles.length) return;
-document.getElementById("largePhoto").src = photoFiles[currentPhoto];
-document.getElementById("largePhoto").alt = "Fotoğraf " + (currentPhoto + 1);
-document.getElementById("photoCounter").textContent =
-(currentPhoto + 1) + " / " + photoFiles.length;
+
+  if (!photoFiles.length) return;
+
+  document.getElementById("largePhoto").src = photoFiles[currentPhoto];
+
+  document.getElementById("largePhoto").alt = "Fotoğraf " + (currentPhoto + 1);
+
+  document.getElementById("photoCounter").textContent =
+
+    (currentPhoto + 1) + " / " + photoFiles.length;
+
 }
 
 function changePhoto(direction) {
-if (!photoFiles.length) return;
-currentPhoto = (currentPhoto + direction + photoFiles.length) % photoFiles.length;
-showLargePhoto();
+
+  if (!photoFiles.length) return;
+
+  currentPhoto = (currentPhoto + direction + photoFiles.length) % photoFiles.length;
+
+  showLargePhoto();
+
 }
 
 function closePhoto() {
-document.getElementById("photoViewer").classList.remove("open");
-document.body.style.overflow = "";
+
+  document.getElementById("photoViewer").classList.remove("open");
+
+  document.body.style.overflow = "";
+
 }
 
 document.addEventListener("keydown", function(event) {
-if (!document.getElementById("photoViewer").classList.contains("open")) return;
-if (event.key === "Escape") closePhoto();
-if (event.key === "ArrowRight") changePhoto(1);
-if (event.key === "ArrowLeft") changePhoto(-1);
+
+  if (!document.getElementById("photoViewer").classList.contains("open")) return;
+
+  if (event.key === "Escape") closePhoto();
+
+  if (event.key === "ArrowRight") changePhoto(1);
+
+  if (event.key === "ArrowLeft") changePhoto(-1);
+
 });
 
 function openPage(pageId) {
-const target = document.getElementById(pageId);
-if (!target || !target.classList.contains("page")) return;
-history.pushState({page:pageId}, "", "#" + pageId);
-showPage(pageId);
+
+  const target = document.getElementById(pageId);
+
+  if (!target || !target.classList.contains("page")) return;
+
+  history.pushState({page:pageId}, "", "#" + pageId);
+
+  showPage(pageId);
+
 }
 
 function showPage(pageId) {
-const target = document.getElementById(pageId);
-if (!target || !target.classList.contains("page")) pageId = "home";
-document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
-document.getElementById(pageId).classList.add("active");
-window.scrollTo({top:0, behavior:"smooth"});
+
+  const target = document.getElementById(pageId);
+
+  if (!target || !target.classList.contains("page")) pageId = "home";
+
+  document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+
+  document.getElementById(pageId).classList.add("active");
+
+  window.scrollTo({top:0, behavior:"smooth"});
+
 }
 
 function goBack() {
-if (history.state && history.state.page && history.state.page !== "home") {
-history.back();
-} else {
-history.replaceState({page:"home"}, "", "#home");
-showPage("home");
-}
+
+  if (history.state && history.state.page && history.state.page !== "home") {
+
+    history.back();
+
+  } else {
+
+    history.replaceState({page:"home"}, "", "#home");
+
+    showPage("home");
+
+  }
+
 }
 
 window.addEventListener("popstate", event => {
-showPage(event.state && event.state.page ? event.state.page : "home");
+
+  showPage(event.state && event.state.page ? event.state.page : "home");
+
 });
 
 (function initializePage() {
-const pageId = window.location.hash.slice(1);
-const target = document.getElementById(pageId);
-if (target && target.classList.contains("page")) {
-history.replaceState({page:pageId}, "", "#" + pageId);
-showPage(pageId);
-} else {
-history.replaceState({page:"home"}, "", "#home");
-showPage("home");
-}
+
+  const pageId = window.location.hash.slice(1);
+
+  const target = document.getElementById(pageId);
+
+  if (target && target.classList.contains("page")) {
+
+    history.replaceState({page:pageId}, "", "#" + pageId);
+
+    showPage(pageId);
+
+  } else {
+
+    history.replaceState({page:"home"}, "", "#home");
+
+    showPage("home");
+
+  }
+
 })();
 
+/* 30 ŞİİR: Her sayfada bir şiir */
+
+const poems = [
+
+{title:"Bir Tebessümün",lines:["Bir tebessümün yeter,","Karanlık geceme güneş doğar.","Sen elimi tuttuğunda,","Bütün dünya bir anlığına durur.","Kalbim yalnız seninle huzur bulur."]},
+
+{title:"En Güzel Mevsimim",lines:["Adını rüzgâra fısıldadım bu gece,","Yıldızlar senin gibi gülümsedi bana.","Ömrümün en güzel mevsimi sensin,","Sen geldin, bahar başladı dünyamda."]},
+
+{title:"Her Zaman",lines:["Kalbim seninle çarpmayı öğrendi,","Gözlerin gözlerime değdiği an.","Sözler tükense bile içimde,","Seni seveceğim her zaman."]},
+
+{title:"Fatmama",lines:["Sen benim en güzel duamsın,","Kalbimde sakladığım dünyamsın.","Gözlerin huzurum, gülüşün baharım,","İyi ki varsın, güzel Fatmam."]},
+
+{title:"Sana Ait",lines:["Kalbimin kapısını sana açtım,","Bütün hayallerimi adınla yazdım.","Her yeni güne seni düşünerek başlarım,","Bir ömür seninle kalmayı dilerim."]},
+
+{title:"Gözlerin",lines:["Gözlerinde kaybolmak isterim,","Her bakışında yeniden severim.","Dünyanın bütün ışıkları sönse bile,","Senin gözlerinde yolumu bulurum."]},
+
+{title:"Özlem",lines:["Yanımda olmadığında seni ararım,","Her sessizlikte sesini duyarım.","Mesafeler girse de aramıza,","Kalbim hep sana doğru yol alır."]},
+
+{title:"İyi Ki Varsın",lines:["Hayatıma güzellik kattın,","Kalbimde bambaşka bir yer yaptın.","Her gün şükrederim seni tanıdığıma,","İyi ki geldin benim dünyama."]},
+
+{title:"Bir Ömür",lines:["Elini tutup yürümek isterim,","Her mevsimi seninle geçirmek isterim.","Yıllar geçse, saçlarımız ağarsa da,","İlk günkü aşkla seni sevmek isterim."]},
+
+{title:"Hayalim",lines:["Bir evimiz olsun sevgiyle dolan,","Penceresinde güneş, bahçesinde çiçek olan.","Akşamları aynı sofraya oturalım,","Her sabah birbirimize yeniden sarılalım."]},
+
+{title:"Sessiz Aşkım",lines:["Bazen kelimeler yetmez anlatmaya,","Kalbim başlar seni sessizce anmaya.","Bir bakışın yeter bütün sözlerden öte,","Sana olan sevgim sığmaz hiçbir cümleye."]},
+
+{title:"Fatma'm",lines:["Adın düştü kalbimin en güzel yerine,","Her duam karıştı senin dileğine.","Bir ömür saklarım sevgini içimde,","Mutluluk bulurum seninle her günde."]},
+
+{title:"Kalbimdeki Ev",lines:["Dünyada kaç şehir olursa olsun,","En güzel yer senin yanın olsun.","Nereye gidersem gideyim sevgilim,","Evim dediğim yer kalbin olsun."]},
+
+{title:"Huzurum",lines:["Yorulduğumda sesin dinlendirir beni,","Bir gülüşün unutturur kederimi.","Kalabalıklar içinde bile bilirim,","Huzurun adını sen diye söylerim."]},
+
+{title:"Vazgeçilmezim",lines:["Kolay değil seni böyle sevmek,","Her gün yeniden sana gönül vermek.","Ne değişirse değişsin bu dünyada,","Vazgeçilmezimsin her koşulda."]},
+
+{title:"Geleceğimiz",lines:["Birlikte kurduğumuz hayallerimiz var,","Önümüzde bizi bekleyen güzel yarınlar.","El ele aşalım bütün yolları,","Sevgiyle dolduralım ömür yıllarını."]},
+
+{title:"Bir Gül Gibi",lines:["Gülüşün açtırır kalbimde çiçekleri,","Sesin güzelleştirir en sıradan günleri.","Sen yanımdayken bahar hiç bitmez,","Sevgim zaman geçse de eksilmez."]},
+
+{title:"Seninle",lines:["Bir kahve, bir sohbet, bir de sen,","Dünyaya bedeldir o küçücük anlar.","Büyük mutluluklar aramam artık,","Sen yanımdayken güzelleşir zaman."]},
+
+{title:"Sana Sözüm",lines:["Üzüldüğünde yanında olacağım,","Güldüğünde sevincine katılacağım.","Zor günlerde elini bırakmayacağım,","Sevgimi her gün sana göstereceğim."]},
+
+{title:"İlk Gün Gibi",lines:["Seni ilk gördüğüm anı hatırlarım,","O heyecanı kalbimde yaşatırım.","Aradan kaç mevsim geçerse geçsin,","Seni ilk günkü gibi severim."]},
+
+{title:"Yıldızım",lines:["Gece gökyüzüne baktığım zaman,","Aklıma düşersin usulca her an.","Yıldızlar ışığını senden alır sanki,","En parlak hayalim sensin sevgilim."]},
+
+{title:"Canım Fatmam",lines:["Canımdan bir parça gibi yakınsın,","En güzel duygularımda saklısın.","Sana söyleyecek binlerce sözüm var,","Hepsinin sonunda yine aşkım var."]},
+
+{title:"Duam",lines:["Her sabah mutlulukla uyanmanı,","Gözlerinde hiç yaş kalmamasını,","Yoluna güzellikler çıkmasını dilerim,","Her duamda seni de anarım sevgilim."]},
+
+{title:"Sarıl Bana",lines:["Dünya yorarsa gel bana,","Bırak bütün dertlerini bir yana.","Kollarımda bul huzurunu,","Birlikte güzelleştirelim yarını."]},
+
+{title:"Benim Evim",lines:["Adresim değişse de değişmez yerin,","Kalbimde saklıdır bütün hayallerin.","Evim dört duvar değil benim için,","Senin yanındır huzur dediğim."]},
+
+{title:"Melodim",lines:["Kalbim senin adınla bir şarkı söyler,","Her nota sevgimizi anlatır meğer.","Dünya sessiz kalsa bile bir gün,","İçimde aşkımızın melodisi sürer."]},
+
+{title:"Her Hâlinle",lines:["Güldüğünde de severim seni,","Yorulduğunda da tutarım elini.","Kusursuz olmanı beklemem senden,","Seni sen olduğun için severim ben."]},
+
+{title:"Yanımda Kal",lines:["Yollar uzasa da benimle yürü,","Birlikte karşılayalım her günü.","Ne çıkarsa çıksın önümüze,","Sevgiyle bakalım geleceğimize."]},
+
+{title:"En Değerlim",lines:["Dünyanın bütün hazinelerinden,","Daha kıymetlisin benim gözümde.","Bir gülüşün yeter mutlu olmama,","İyi ki varsın hayatımda, Fatma."]},
+
+{title:"Sonsuza Dek",lines:["Ömrümün en güzel hikâyesisin,","Kalbimin bitmeyen neşesisin.","Yıllar geçse de değişmeyecek sözüm,","Seni sevmek olacak en güzel ömrüm."]}
+
+];
+
+let currentPoem = 0;
+
+function renderPoem(index) {
+
+  const item = poems[index];
+
+  const content = document.getElementById("poemContent");
+
+  content.replaceChildren();
+
+  const article = document.createElement("article");
+
+  article.className = "poem-slide";
+
+  const title = document.createElement("h3");
+
+  title.textContent = "❤️ " + (index + 1) + ". " + item.title;
+
+  article.appendChild(title);
+
+  const text = document.createElement("p");
+
+  text.textContent = item.lines.join("\n");
+
+  article.appendChild(text);
+
+  content.appendChild(article);
+
+  document.getElementById("poemCounter").textContent =
+
+    (index + 1) + " / " + poems.length;
+
+  document.getElementById("previousPoem").disabled = index === 0;
+
+  document.getElementById("nextPoem").disabled = index === poems.length - 1;
+
+}
+
+function changePoem(direction) {
+
+  const nextIndex = currentPoem + direction;
+
+  if (nextIndex < 0 || nextIndex >= poems.length) return;
+
+  currentPoem = nextIndex;
+
+  renderPoem(currentPoem);
+
+}
+
 /* 30 FATMA AKROSTİŞİ */
+
 const acrostics = [
-{title:"Ömürlük Sevgim",lines:[
-"Fırtınalı dünyamda tek sığınağım sensin.",
-"Aşkınla aydınlanır her yeni sabahım.",
-"Tut ellerimi, hiç bırakma ne olur.",
-"Masmavi gökyüzüm, en güzel baharım.",
-"Adını bir ömür kalbime yazdım."
-]},
-{title:"Kalbimi Çaldın",lines:[
-"Farkında olmadan çaldın kalbimi.",
-"Anlatamam içimdeki derin sevgiyi.",
-"Tüm yollarım sana çıkıyor geceleri.",
-"Mutluluk seninle güzel, seninle gerçek.",
-"Aşkınla güzelleşti ömrümün her yeri."
-]},
-{title:"Kalbimin Sahibi",lines:[
-"Fısıldarım adını yıldızlara her gece.",
-"Aşkın işler kalbimin en derin yerine.",
-"Tüm dünya susar sen bana gülünce.",
-"Mutluluk bulurum ellerin ellerimdeyken.",
-"Ait bu kalp sana, ilk günden beri."
-]},
-{title:"Biricik Fatmam",lines:[
-"Farklısın herkesten, bambaşka bir güzellik.",
-"Adınla başlar içimdeki tüm iyilik.",
-"Tatlı gülüşün dağıtır bütün kederimi.",
-"Mutluluk seninle bulur gerçek yerini.",
-"Aşkımın en güzel adı sensin, Fatmam."
-]},
-{title:"Sonsuz Aşk",lines:[
-"Fani dünyada kalıcı olan sevgimsin.",
-"Aklımdaki en güzel düş, gerçeğim sensin.",
-"Tüm ömrümü seninle paylaşmak isterim.",
-"Mutlu yarınlara el ele yürüyelim.",
-"Aşkımız hiç bitmesin, hep birlikte gülelim."
-]},
-{title:"Gülüşün",lines:[
-"Ferahlar içim sen gülümseyince.",
-"Aydınlanır gecem gözlerin değince.",
-"Tüm çiçekler kıskanır güzelliğini.",
-"Mutluluk sarar kalbimi görünce seni.",
-"Aşkım çoğalır her tebessümünde."
-]},
-{title:"Özlemim",lines:[
-"Farkına varmadan özlerim seni.",
-"Adını anar kalbim, bekler gelişini.",
-"Takvimler geçse de değişmez sevgim.",
-"Mesafeler silemez sana bağlılığımı.",
-"Aklımda sen, kalbimde sen, her anımda sen."
-]},
-{title:"İyi Ki Varsın",lines:[
-"Farklı bir anlam kattın hayatıma.",
-"Aşkı yeniden öğrettin kalbime.",
-"Tüm güzellikler seninle anlam buldu.",
-"Mutluluk kapımı seninle çaldı.",
-"Allah'a şükür, iyi ki çıktın karşıma."
-]},
-{title:"Bir Ömür El Ele",lines:[
-"Fırtınalar kopsa da yanında kalırım.",
-"Ağladığında gözyaşlarını silerim.",
-"Tüm yüklerini seninle paylaşırım.",
-"Mutlu günlerinde ilk ben sarılırım.",
-"Aşkımla bir ömür sana eşlik ederim."
-]},
-{title:"En Güzel Hayalim",lines:[
-"Fark etmez nerede olduğumuz.",
-"Asıl güzel olan yan yana oluşumuz.",
-"Tüm hayallerimde elin elimde.",
-"Mutlu bir gelecek saklı gözlerinde.",
-"Aşk dolu bir yuva kurmak seninle."
-]},
-{title:"Gözlerin",lines:[
-"Ferah bir sabah gibi bakar gözlerin.",
-"Aydınlatır karanlığımı gülüşlerin.",
-"Tüm kelimeler yetersiz kalır bazen.",
-"Mest olur kalbim sana her baktığımda.",
-"Aşkımı anlatır gözlerim sana sessizce."
-]},
-{title:"Adın Fatma",lines:[
-"Fatma, en güzel duamın adısın.",
-"Aklımın, kalbimin en güzel yarısısın.",
-"Tüm şiirler sana çıksın isterim.",
-"Mutluluğu seninle yaşamak dilerim.",
-"Adını her söylediğimde yeniden severim."
-]},
-{title:"Kalbimdeki Ev",lines:[
-"Farklı şehirlerde olsak da yakınımsın.",
-"Aklımın her köşesinde saklısın.",
-"Tüm yolların sonunda sana gelirim.",
-"Mutluluğu senin yanında bilirim.",
-"Aşkımın evi sensin, Fatmam."
-]},
-{title:"Tatlı Huzurum",lines:[
-"Fısıltın bile huzur verir bana.",
-"Aşkınla renk gelir her yeni güne.",
-"Tüm telaşım diner yanında.",
-"Mutlu olur kalbim bir bakışınla.",
-"Ait hissederim kendimi kollarında."
-]},
-{title:"Vazgeçilmezim",lines:[
-"Feda ederim bir gülüşün için kederimi.",
-"Asla eksiltmem sana olan sevgimi.",
-"Tüm zorluklara seninle göğüs gererim.",
-"Mümkün olsa her üzüntünü ben üstlenirim.",
-"Aşkım, seninle her gün yeniden güçlenirim."
-]},
-{title:"Geleceğim",lines:[
-"Farklı düşler kurarız aynı gökyüzünde.",
-"Aynı umut büyür ikimizin kalbinde.",
-"Tüm yarınlar güzel olsun seninle.",
-"Mutlu yaşlanalım el ele, sevgiyle.",
-"Aşkımız iz bıraksın geçen her senede."
-]},
-{title:"Bir Gül Gibi",lines:[
-"Ferah kokun gibi güzelleşir günüm.",
-"Açan bir gül gibi aydınlanır ömrüm.",
-"Tüm renkler anlam kazanır yanında.",
-"Mutluluk yeşerir kalbimin bahçesinde.",
-"Aşkınla çiçek açar ruhum her gün."
-]},
-{title:"Seninle Güzel",lines:[
-"Farklı bir güzellik var seninle hayatta.",
-"Aşkınla anlam bulur her dakika.",
-"Tüm küçük anılar kıymetli olur.",
-"Mutluluk sen yanımdayken kalbime dolar.",
-"Aklım hep sende, sevgim sonsuza uzanır."
-]},
-{title:"Sana Sözüm",lines:[
-"Fırtınada elini bırakmayacağım.",
-"Acında ve sevincinde yanında olacağım.",
-"Tüm sözlerimi kalbimle tutacağım.",
-"Mutluluğun için elimden geleni yapacağım.",
-"Aşkımızı her gün yeniden yaşatacağım."
-]},
-{title:"İlk Gün Gibi",lines:[
-"Fark etmez kaç gün, kaç yıl geçerse.",
-"Aynı heyecan kalbimde sen gülünce.",
-"Taze bir sevda gibi severim seni.",
-"Mutlulukla anarım tanıştığımız günü.",
-"Aşkım büyür her yeni gün seninle."
-]},
-{title:"Gecemin Yıldızı",lines:[
-"Fener olur gözlerin karanlık gecemde.",
-"Ay gibi parlayan yüzün düşlerimde.",
-"Tüm yıldızlar adını fısıldar sanki.",
-"Mutlulukla dolar sana uzanan kalbim.",
-"Aşkımın göğünde en parlak yıldız sensin."
-]},
-{title:"Canım Fatmam",lines:[
-"Feda olsun sana en güzel sözlerim.",
-"Anlatmaya yetmez sana hissettiklerim.",
-"Tüm kalbimle severim seni.",
-"Mutlu etmek isterim her gün seni.",
-"Aşkım, canım, bir tanem benim."
-]},
-{title:"Bir Duam Var",lines:[
-"Fani ömrümün en güzel dileğisin.",
-"Allah'tan dilediğim huzurun kendisisin.",
-"Tüm güzel yollar sana çıksın isterim.",
-"Mutluluğun hiç eksilmesin diye dua ederim.",
-"Aşkımızı ömür boyu korumayı dilerim."
-]},
-{title:"Sıcacık Sarılmak",lines:[
-"Fırtınalar diner sana sarılınca.",
-"Aklımdaki bütün dertler uzaklaşınca.",
-"Tüm dünya küçülür kollarında.",
-"Mutluluk bulurum kalbinin yanında.",
-"Aşkın en güzel hali sarılmak sana."
-]},
-{title:"Sen Benim Evimsin",lines:[
-"Farklı yerlerde aramam huzuru.",
-"Asıl yuvam bulduğum senin yanı.",
-"Tüm yolların sonunda sana dönerim.",
-"Mutlu bir hayatı seninle isterim.",
-"Aşkımın evi sensin, başka yer bilmem."
-]},
-{title:"Kalbimin Melodisi",lines:[
-"Fısıldar içimde adın bir şarkı gibi.",
-"Aşkın doldurur ruhumun her yerini.",
-"Tüm notalar seninle güzelleşir.",
-"Mutluluk ritmi kalbimde seninle değişir.",
-"Aşkımız hiç susmayan bir melodi gibi."
-]},
-{title:"Her Hâlinle",lines:[
-"Fark etmez bazen yorgun olman.",
-"Ağlasan da gülsen de güzelsin bana.",
-"Tüm hâllerinle seviyorum seni.",
-"Mutluluğun, huzurun önemli benim için.",
-"Aşkım, olduğun hâlinle özelsin."
-]},
-{title:"Yanımda Kal",lines:[
-"Fırtına çıksa da yanımda kal.",
-"Acılar gelse de elimden tut.",
-"Tüm hayallerimizi birlikte kuralım.",
-"Mutlu yarınlara beraber yürüyelim.",
-"Aşkımızı bir ömür yaşatalım."
-]},
-{title:"En Değerlim",lines:[
-"Fazlasını istemem senden, bir gülüş yeter.",
-"Aşkın kalbime en güzel hediyedir.",
-"Tüm dünyaya değişmem sevgini.",
-"Mutluluk sayarım yanında geçen her günü.",
-"Adın kalbimin en kıymetli yerinde."
-]},
-{title:"Sonsuza Dek Fatmam",lines:[
-"Fani ömrümün en güzel hikâyesisin.",
-"Aşkımın başlangıcı, bitmeyen neşesisin.",
-"Tüm yılları seninle geçirmek isterim.",
-"Mutlu anılarla ömrümüzü süsleyelim.",
-"Adını son nefesime dek sevgimle anacağım."
-]}
+
+{title:"Ömürlük Sevgim",lines:["Fırtınalı dünyamda tek sığınağım sensin.","Aşkınla aydınlanır her yeni sabahım.","Tut ellerimi, hiç bırakma ne olur.","Masmavi gökyüzüm, en güzel baharım.","Adını bir ömür kalbime yazdım."]},
+
+{title:"Kalbimi Çaldın",lines:["Farkında olmadan çaldın kalbimi.","Anlatamam içimdeki derin sevgiyi.","Tüm yollarım sana çıkıyor geceleri.","Mutluluk seninle güzel, seninle gerçek.","Aşkınla güzelleşti ömrümün her yeri."]},
+
+{title:"Kalbimin Sahibi",lines:["Fısıldarım adını yıldızlara her gece.","Aşkın işler kalbimin en derin yerine.","Tüm dünya susar sen bana gülünce.","Mutluluk bulurum ellerin ellerimdeyken.","Ait bu kalp sana, ilk günden beri."]},
+
+{title:"Biricik Fatmam",lines:["Farklısın herkesten, bambaşka bir güzellik.","Adınla başlar içimdeki tüm iyilik.","Tatlı gülüşün dağıtır bütün kederimi.","Mutluluk seninle bulur gerçek yerini.","Aşkımın en güzel adı sensin, Fatmam."]},
+
+{title:"Sonsuz Aşk",lines:["Fani dünyada kalıcı olan sevgimsin.","Aklımdaki en güzel düş, gerçeğim sensin.","Tüm ömrümü seninle paylaşmak isterim.","Mutlu yarınlara el ele yürüyelim.","Aşkımız hiç bitmesin, hep birlikte gülelim."]},
+
+{title:"Gülüşün",lines:["Ferahlar içim sen gülümseyince.","Aydınlanır gecem gözlerin değince.","Tüm çiçekler kıskanır güzelliğini.","Mutluluk sarar kalbimi görünce seni.","Aşkım çoğalır her tebessümünde."]},
+
+{title:"Özlemim",lines:["Farkına varmadan özlerim seni.","Adını anar kalbim, bekler gelişini.","Takvimler geçse de değişmez sevgim.","Mesafeler silemez sana bağlılığımı.","Aklımda sen, kalbimde sen, her anımda sen."]},
+
+{title:"İyi Ki Varsın",lines:["Farklı bir anlam kattın hayatıma.","Aşkı yeniden öğrettin kalbime.","Tüm güzellikler seninle anlam buldu.","Mutluluk kapımı seninle çaldı.","Allah'a şükür, iyi ki çıktın karşıma."]},
+
+{title:"Bir Ömür El Ele",lines:["Fırtınalar kopsa da yanında kalırım.","Ağladığında gözyaşlarını silerim.","Tüm yüklerini seninle paylaşırım.","Mutlu günlerinde ilk ben sarılırım.","Aşkımla bir ömür sana eşlik ederim."]},
+
+{title:"En Güzel Hayalim",lines:["Fark etmez nerede olduğumuz.","Asıl güzel olan yan yana oluşumuz.","Tüm hayallerimde elin elimde.","Mutlu bir gelecek saklı gözlerinde.","Aşk dolu bir yuva kurmak seninle."]},
+
+{title:"Gözlerin",lines:["Ferah bir sabah gibi bakar gözlerin.","Aydınlatır karanlığımı gülüşlerin.","Tüm kelimeler yetersiz kalır bazen.","Mest olur kalbim sana her baktığımda.","Aşkımı anlatır gözlerim sana sessizce."]},
+
+{title:"Adın Fatma",lines:["Fatma, en güzel duamın adısın.","Aklımın, kalbimin en güzel yarısısın.","Tüm şiirler sana çıksın isterim.","Mutluluğu seninle yaşamak dilerim.","Adını her söylediğimde yeniden severim."]},
+
+{title:"Kalbimdeki Ev",lines:["Farklı şehirlerde olsak da yakınımsın.","Aklımın her köşesinde saklısın.","Tüm yolların sonunda sana gelirim.","Mutluluğu senin yanında bilirim.","Aşkımın evi sensin, Fatmam."]},
+
+{title:"Tatlı Huzurum",lines:["Fısıltın bile huzur verir bana.","Aşkınla renk gelir her yeni güne.","Tüm telaşım diner yanında.","Mutlu olur kalbim bir bakışınla.","Ait hissederim kendimi kollarında."]},
+
+{title:"Vazgeçilmezim",lines:["Feda ederim bir gülüşün için kederimi.","Asla eksiltmem sana olan sevgimi.","Tüm zorluklara seninle göğüs gererim.","Mümkün olsa her üzüntünü ben üstlenirim.","Aşkım, seninle her gün yeniden güçlenirim."]},
+
+{title:"Geleceğim",lines:["Farklı düşler kurarız aynı gökyüzünde.","Aynı umut büyür ikimizin kalbinde.","Tüm yarınlar güzel olsun seninle.","Mutlu yaşlanalım el ele, sevgiyle.","Aşkımız iz bıraksın geçen her senede."]},
+
+{title:"Bir Gül Gibi",lines:["Ferah kokun gibi güzelleşir günüm.","Açan bir gül gibi aydınlanır ömrüm.","Tüm renkler anlam kazanır yanında.","Mutluluk yeşerir kalbimin bahçesinde.","Aşkınla çiçek açar ruhum her gün."]},
+
+{title:"Seninle Güzel",lines:["Farklı bir güzellik var seninle hayatta.","Aşkınla anlam bulur her dakika.","Tüm küçük anılar kıymetli olur.","Mutluluk sen yanımdayken kalbime dolar.","Aklım hep sende, sevgim sonsuza uzanır."]},
+
+{title:"Sana Sözüm",lines:["Fırtınada elini bırakmayacağım.","Acında ve sevincinde yanında olacağım.","Tüm sözlerimi kalbimle tutacağım.","Mutluluğun için elimden geleni yapacağım.","Aşkımızı her gün yeniden yaşatacağım."]},
+
+{title:"İlk Gün Gibi",lines:["Fark etmez kaç gün, kaç yıl geçerse.","Aynı heyecan kalbimde sen gülünce.","Taze bir sevda gibi severim seni.","Mutlulukla anarım tanıştığımız günü.","Aşkım büyür her yeni gün seninle."]},
+
+{title:"Gecemin Yıldızı",lines:["Fener olur gözlerin karanlık gecemde.","Ay gibi parlayan yüzün düşlerimde.","Tüm yıldızlar adını fısıldar sanki.","Mutlulukla dolar sana uzanan kalbim.","Aşkımın göğünde en parlak yıldız sensin."]},
+
+{title:"Canım Fatmam",lines:["Feda olsun sana en güzel sözlerim.","Anlatmaya yetmez sana hissettiklerim.","Tüm kalbimle severim seni.","Mutlu etmek isterim her gün seni.","Aşkım, canım, bir tanem benim."]},
+
+{title:"Bir Duam Var",lines:["Fani ömrümün en güzel dileğisin.","Allah'tan dilediğim huzurun kendisisin.","Tüm güzel yollar sana çıksın isterim.","Mutluluğun hiç eksilmesin diye dua ederim.","Aşkımızı ömür boyu korumayı dilerim."]},
+
+{title:"Sıcacık Sarılmak",lines:["Fırtınalar diner sana sarılınca.","Aklımdaki bütün dertler uzaklaşınca.","Tüm dünya küçülür kollarında.","Mutluluk bulurum kalbinin yanında.","Aşkın en güzel hali sarılmak sana."]},
+
+{title:"Sen Benim Evimsin",lines:["Farklı yerlerde aramam huzuru.","Asıl yuvam bulduğum senin yanı.","Tüm yolların sonunda sana dönerim.","Mutlu bir hayatı seninle isterim.","Aşkımın evi sensin, başka yer bilmem."]},
+
+{title:"Kalbimin Melodisi",lines:["Fısıldar içimde adın bir şarkı gibi.","Aşkın doldurur ruhumun her yerini.","Tüm notalar seninle güzelleşir.","Mutluluk ritmi kalbimde seninle değişir.","Aşkımız hiç susmayan bir melodi gibi."]},
+
+{title:"Her Hâlinle",lines:["Fark etmez bazen yorgun olman.","Ağlasan da gülsen de güzelsin bana.","Tüm hâllerinle seviyorum seni.","Mutluluğun, huzurun önemli benim için.","Aşkım, olduğun hâlinle özelsin."]},
+
+{title:"Yanımda Kal",lines:["Fırtına çıksa da yanımda kal.","Acılar gelse de elimden tut.","Tüm hayallerimizi birlikte kuralım.","Mutlu yarınlara beraber yürüyelim.","Aşkımızı bir ömür yaşatalım."]},
+
+{title:"En Değerlim",lines:["Fazlasını istemem senden, bir gülüş yeter.","Aşkın kalbime en güzel hediyedir.","Tüm dünyaya değişmem sevgini.","Mutluluk sayarım yanında geçen her günü.","Adın kalbimin en kıymetli yerinde."]},
+
+{title:"Sonsuza Dek Fatmam",lines:["Fani ömrümün en güzel hikâyesisin.","Aşkımın başlangıcı, bitmeyen neşesisin.","Tüm yılları seninle geçirmek isterim.","Mutlu anılarla ömrümüzü süsleyelim.","Adını son nefesime dek sevgimle anacağım."]}
+
 ];
 
 let currentAcrostic = 0;
 
 function renderAcrostic(index) {
-const item = acrostics[index];
-const content = document.getElementById("acrosticContent");
-content.replaceChildren();
 
-const slide = document.createElement("article");
-slide.className = "acrostic-slide";
+  const item = acrostics[index];
 
-const title = document.createElement("h3");
-title.textContent = "❤️ " + (index + 1) + ". " + item.title;
-slide.appendChild(title);
+  const content = document.getElementById("acrosticContent");
 
-item.lines.forEach((line, lineIndex) => {
-const row = document.createElement("p");
-row.className = "acrostic-line";
+  content.replaceChildren();
 
-const letter = document.createElement("span");
-letter.className = "acrostic-letter";
-letter.textContent = "FATMA"[lineIndex];
+  const slide = document.createElement("article");
 
-const words = document.createElement("span");
-words.textContent = line;
+  slide.className = "acrostic-slide";
 
-row.append(letter, words);
-slide.appendChild(row);
-});
+  const title = document.createElement("h3");
 
-content.appendChild(slide);
-document.getElementById("acrosticCounter").textContent =
-(index + 1) + " / " + acrostics.length;
-document.getElementById("previousAcrostic").disabled = index === 0;
-document.getElementById("nextAcrostic").disabled =
-index === acrostics.length - 1;
+  title.textContent = "❤️ " + (index + 1) + ". " + item.title;
+
+  slide.appendChild(title);
+
+  item.lines.forEach((line, lineIndex) => {
+
+    const row = document.createElement("p");
+
+    row.className = "acrostic-line";
+
+    const letter = document.createElement("span");
+
+    letter.className = "acrostic-letter";
+
+    letter.textContent = "FATMA"[lineIndex];
+
+    const words = document.createElement("span");
+
+    words.textContent = line;
+
+    row.append(letter, words);
+
+    slide.appendChild(row);
+
+  });
+
+  content.appendChild(slide);
+
+  document.getElementById("acrosticCounter").textContent =
+
+    (index + 1) + " / " + acrostics.length;
+
+  document.getElementById("previousAcrostic").disabled = index === 0;
+
+  document.getElementById("nextAcrostic").disabled =
+
+    index === acrostics.length - 1;
+
 }
 
 function changeAcrostic(direction) {
-const nextIndex = currentAcrostic + direction;
-if (nextIndex < 0 || nextIndex >= acrostics.length) return;
-currentAcrostic = nextIndex;
-renderAcrostic(currentAcrostic);
+
+  const nextIndex = currentAcrostic + direction;
+
+  if (nextIndex < 0 || nextIndex >= acrostics.length) return;
+
+  currentAcrostic = nextIndex;
+
+  renderAcrostic(currentAcrostic);
+
 }
 
 renderGallery();
+
+renderPoem(currentPoem);
+
 renderAcrostic(currentAcrostic);
 
 const heartContainer = document.getElementById("hearts");
+
 const heartSymbols = ["❤️","💕","💗","💖","♥"];
 
 function createHeart() {
-const heart = document.createElement("span");
-heart.className = "heart";
-heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-heart.style.left = Math.random() * 100 + "vw";
-heart.style.fontSize = (12 + Math.random() * 18) + "px";
-heart.style.animationDuration = (6 + Math.random() * 7) + "s";
-heart.style.opacity = (0.3 + Math.random() * 0.5).toString();
-heartContainer.appendChild(heart);
-heart.addEventListener("animationend", () => heart.remove());
+
+  const heart = document.createElement("span");
+
+  heart.className = "heart";
+
+  heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+
+  heart.style.left = Math.random() * 100 + "vw";
+
+  heart.style.fontSize = (12 + Math.random() * 18) + "px";
+
+  heart.style.animationDuration = (6 + Math.random() * 7) + "s";
+
+  heart.style.opacity = (0.3 + Math.random() * 0.5).toString();
+
+  heartContainer.appendChild(heart);
+
+  heart.addEventListener("animationend", () => heart.remove());
+
 }
 
 for (let i = 0; i < 18; i++) setTimeout(createHeart, i * 300);
+
 setInterval(createHeart, 650);
+
 </script>
 
 <!-- Ortak günlük ve fotoğraf bağlantısı -->
+
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+
 import {
+
   getDatabase,
+
   ref,
+
   onValue,
+
   set,
+
   push
+
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
 const firebaseConfig = {
+
   apiKey: "AIzaSyDfl-Aih3nAsO0IfPmCqlm7Lx5YwNp3OTE",
+
   authDomain: "fatmam-gunluk.firebaseapp.com",
+
   databaseURL: "https://fatmam-gunluk-default-rtdb.firebaseio.com",
+
   projectId: "fatmam-gunluk",
+
   storageBucket: "fatmam-gunluk.firebasestorage.app",
+
   messagingSenderId: "1015746572045",
+
   appId: "1:1015746572045:web:798c41a67cc5428c454a44",
+
   measurementId: "G-NC97X7G01N"
+
 };
 
 const CLOUD_NAME = "yuhskgwk";
+
 const UPLOAD_PRESET = "fatmam_fotograf";
 
 const fatmaInput = document.getElementById("fatmaDiary");
+
 const sametInput = document.getElementById("sametDiary");
+
 const message = document.getElementById("saveMessage");
+
 const uploadButton = document.getElementById("uploadButton");
+
 const photoFileInput = document.getElementById("photoFile");
+
 const uploadStatus = document.getElementById("uploadStatus");
+
 const saveDiaryButton = document.getElementById("saveDiaryButton");
 
 let photoUploadInProgress = false;
 
 try {
+
   const app = initializeApp(firebaseConfig);
+
   const database = getDatabase(app);
 
   // Ortak günlük
+
   const diaryRef = ref(database, "diary");
 
   onValue(diaryRef, (snapshot) => {
+
     const data = snapshot.val() || {};
 
     if (document.activeElement !== fatmaInput) {
+
       fatmaInput.value = data.fatma || "";
+
     }
+
     if (document.activeElement !== sametInput) {
+
       sametInput.value = data.samet || "";
+
     }
 
     message.textContent = "❤️ Ortak günlük bağlandı ve güncellendi.";
+
   }, (error) => {
+
     message.textContent = "Günlük yüklenemedi: " + error.message;
+
   });
 
   window.saveDiary = async function() {
+
     message.textContent = "Kaydediliyor...";
 
     try {
+
       await set(diaryRef, {
+
         fatma: fatmaInput.value,
+
         samet: sametInput.value
+
       });
+
       message.textContent = "❤️ Günlük kaydedildi! Diğer telefonda da güncellenecek.";
+
     } catch (error) {
+
       message.textContent = "Kayıt yapılamadı. Bağlantı ayarlarını kontrol et.";
+
       console.error(error);
+
     }
+
   };
 
   saveDiaryButton.addEventListener("click", () => window.saveDiary());
 
   // Ortak fotoğraf galerisi
+
   const photosRef = ref(database, "photos");
 
   onValue(photosRef, (snapshot) => {
+
     const data = snapshot.val() || {};
 
     const photos = Object.entries(data)
-      .filter(([key, photo]) => photo && typeof photo.url === "string" &&
-        /^https:\/\/res\.cloudinary\.com\//.test(photo.url))
+
+      .filter(([key, photo]) =>
+
+        photo &&
+
+        typeof photo.url === "string" &&
+
+        /^https:\/\/res\.cloudinary\.com\//.test(photo.url)
+
+      )
+
       .map(([key, photo]) => ({
+
         id: key,
+
         url: photo.url,
+
         createdAt: photo.createdAt || 0
+
       }))
+
       .sort((a, b) => a.createdAt - b.createdAt);
 
     window.setOnlinePhotos(photos);
+
     uploadStatus.textContent = "❤️ Ortak fotoğraf galerisi hazır.";
+
   }, (error) => {
-    uploadStatus.textContent = "Fotoğraf bağlantısı kurulamadı. Veritabanı ayarlarını kontrol et.";
+
+    uploadStatus.textContent =
+
+      "Fotoğraf bağlantısı kurulamadı. Veritabanı ayarlarını kontrol et.";
+
     console.error(error);
+
   });
 
   // Fotoğraf seçme ve yükleme
+
   uploadButton.addEventListener("click", () => {
+
     if (photoUploadInProgress) return;
+
     photoFileInput.click();
+
   });
 
   photoFileInput.addEventListener("change", async () => {
+
     const file = photoFileInput.files && photoFileInput.files[0];
+
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
+
       uploadStatus.textContent = "Lütfen bir fotoğraf dosyası seç.";
+
       photoFileInput.value = "";
+
       return;
+
     }
 
     if (file.size > 10 * 1024 * 1024) {
+
       uploadStatus.textContent = "Fotoğraf en fazla 10 MB olabilir.";
+
       photoFileInput.value = "";
+
       return;
+
     }
 
     photoUploadInProgress = true;
+
     uploadButton.disabled = true;
+
     uploadButton.textContent = "⏳ Fotoğraf yükleniyor...";
+
     uploadStatus.textContent = "Fotoğraf yükleniyor, lütfen bekle... ❤️";
 
     try {
+
       const formData = new FormData();
+
       formData.append("file", file);
+
       formData.append("upload_preset", UPLOAD_PRESET);
 
       const response = await fetch(
+
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+
         { method: "POST", body: formData }
+
       );
 
       const result = await response.json();
 
       if (!response.ok || !result.secure_url) {
+
         console.error("Cloudinary yanıtı:", result);
+
         throw new Error(
+
           result.error && result.error.message
+
             ? result.error.message
+
             : "Fotoğraf yüklenemedi. Yükleme ayarlarını kontrol et."
+
         );
+
       }
 
       await push(photosRef, {
+
         url: result.secure_url,
+
         createdAt: Date.now()
+
       });
 
-      uploadStatus.textContent = "❤️ Fotoğraf eklendi! Diğer telefonda da görünmesi gerekiyor.";
-    } catch (error) {
-      console.error(error);
       uploadStatus.textContent =
-        "Fotoğraf
+
+        "❤️ Fotoğraf eklendi! Diğer telefonda da görünmesi gerekiyor.";
+
+    } catch (error) {
+
+      console.error(error);
+
+      uploadStatus.textContent =
+
+        "Fotoğraf eklenemedi: " + error.message +
+
+        " — Ön ayar adını ve imzasız yükleme ayarını kontrol et.";
+
+    } finally {
+
+      photoUploadInProgress = false;
+
+      uploadButton.disabled = false;
+
+      uploadButton.textContent = "➕ Fotoğraf Ekle ❤️";
+
+      photoFileInput.value = "";
+
+    }
+
+  });
+
+} catch (error) {
+
+  console.error(error);
+
+  message.textContent = "Ortak günlük bağlantısı kurulamadı.";
+
+  uploadStatus.textContent = "Fotoğraf bağlantısı kurulamadı.";
+
+  uploadButton.disabled = true;
+
+  window.saveDiary = function() {
+
+    message.textContent = "Bağlantı kurulamadığı için kayıt yapılamadı.";
+
+  };
+
+}
+
+</script>
+
+</body>
+
+</html>
