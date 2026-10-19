@@ -39,6 +39,10 @@ button:focus-visible{outline:3px solid #a92e69;outline-offset:3px}
 .photo-gallery img{display:block;width:100%;height:220px;object-fit:cover;border-radius:16px;border:2px solid white;box-shadow:0 5px 15px #70475b30;cursor:pointer;transition:transform .25s}
 .photo-gallery img:hover{transform:scale(1.03)}
 .gallery-caption{text-align:center;font-style:italic;margin-top:20px;line-height:1.7;color:#8a3560}
+.upload-area{text-align:center;margin-bottom:22px}
+.upload-button{display:block;width:100%;background:#d96b9c;color:white;font-size:17px;font-weight:bold}
+.upload-help{font-size:14px;line-height:1.6;margin-top:10px;color:#8a3560}
+.upload-status{text-align:center;margin-top:12px;font-size:14px;line-height:1.6;color:#8a3560;overflow-wrap:anywhere}
 .photo-viewer{display:none;position:fixed;inset:0;z-index:9999;background:rgba(25,12,22,.94);align-items:center;justify-content:center;padding:60px 55px}
 .photo-viewer.open{display:flex}
 .photo-viewer img{display:block;max-width:100%;max-height:78vh;object-fit:contain;border-radius:12px}
@@ -94,13 +98,15 @@ Fatmam. ❤️
 <button class="back-button" onclick="goBack()">← Geri dön</button>
 <h2 class="page-title">📸 Fotoğraflarımız ❤️</h2>
 <div class="content-card">
-<div class="photo-gallery">
-<img src="3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png" alt="Anımız 1" loading="lazy" onclick="openPhoto(0)">
-<img src="5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg" alt="Anımız 2" loading="lazy" onclick="openPhoto(1)">
-<img src="671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png" alt="Anımız 3" loading="lazy" onclick="openPhoto(2)">
-<img src="E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg" alt="Anımız 4" loading="lazy" onclick="openPhoto(3)">
-<img src="IMG_2794.jpeg" alt="Anımız 5" loading="lazy" onclick="openPhoto(4)">
+
+<div class="upload-area">
+<button id="uploadButton" class="upload-button">➕ Fotoğraf Ekle ❤️</button>
+<input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+<p class="upload-help">Telefonundan bir fotoğraf seçebilirsin. Eklenen fotoğraflar ortak galeride görünür. ❤️</p>
+<p id="uploadStatus" class="upload-status" aria-live="polite">Fotoğraf bağlantısı hazırlanıyor...</p>
 </div>
+
+<div id="photoGallery" class="photo-gallery"></div>
 <p class="gallery-caption">Her fotoğraf, seninle güzel bir anı... ❤️</p>
 </div>
 </section>
@@ -180,7 +186,7 @@ Aklımı başımdan alan o tek imzamsın.</p>
 <textarea id="fatmaDiary" class="diary-input" placeholder="Fatma'nın düşüncelerini buraya yaz..."></textarea>
 <label class="daily-title" for="sametDiary">💙 Samet'in Günlüğü</label>
 <textarea id="sametDiary" class="diary-input" placeholder="Samet'in düşüncelerini buraya yaz..."></textarea>
-<button class="save-button" onclick="saveDiary()">💾 Günlüğü Kaydet</button>
+<button class="save-button" id="saveDiaryButton">💾 Günlüğü Kaydet</button>
 <p id="saveMessage" class="save-message" aria-live="polite">Günlük bağlantısı kuruluyor...</p>
 </div>
 </section>
@@ -195,7 +201,7 @@ Aklımı başımdan alan o tek imzamsın.</p>
 </div>
 
 <script>
-const photoFiles = [
+const originalPhotoFiles = [
 "3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png",
 "5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg",
 "671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png",
@@ -203,7 +209,37 @@ const photoFiles = [
 "IMG_2794.jpeg"
 ];
 
+let onlinePhotoFiles = [];
+let photoFiles = [...originalPhotoFiles];
 let currentPhoto = 0;
+
+function renderGallery() {
+const gallery = document.getElementById("photoGallery");
+gallery.replaceChildren();
+
+photoFiles.forEach((url, index) => {
+const img = document.createElement("img");
+img.src = url;
+img.alt = "Anımız " + (index + 1);
+img.loading = "lazy";
+img.addEventListener("click", () => openPhoto(index));
+img.onerror = () => {
+img.alt = "Fotoğraf yüklenemedi";
+};
+gallery.appendChild(img);
+});
+}
+
+window.setOnlinePhotos = function(photos) {
+onlinePhotoFiles = photos;
+photoFiles = [...originalPhotoFiles, ...onlinePhotoFiles.map(photo => photo.url)];
+renderGallery();
+
+if (document.getElementById("photoViewer").classList.contains("open")) {
+currentPhoto = Math.min(currentPhoto, Math.max(0, photoFiles.length - 1));
+showLargePhoto();
+}
+};
 
 function openPhoto(index) {
 currentPhoto = index;
@@ -213,6 +249,7 @@ document.body.style.overflow = "hidden";
 }
 
 function showLargePhoto() {
+if (!photoFiles.length) return;
 document.getElementById("largePhoto").src = photoFiles[currentPhoto];
 document.getElementById("largePhoto").alt = "Fotoğraf " + (currentPhoto + 1);
 document.getElementById("photoCounter").textContent =
@@ -220,6 +257,7 @@ document.getElementById("photoCounter").textContent =
 }
 
 function changePhoto(direction) {
+if (!photoFiles.length) return;
 currentPhoto = (currentPhoto + direction + photoFiles.length) % photoFiles.length;
 showLargePhoto();
 }
@@ -276,6 +314,8 @@ showPage("home");
 }
 })();
 
+renderGallery();
+
 const heartContainer = document.getElementById("hearts");
 const heartSymbols = ["❤️","💕","💗","💖","♥"];
 
@@ -295,14 +335,15 @@ for (let i = 0; i < 18; i++) setTimeout(createHeart, i * 300);
 setInterval(createHeart, 650);
 </script>
 
-<!-- Firebase ortak günlük bağlantısı -->
+<!-- Ortak günlük ve fotoğraf bağlantısı -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 import {
   getDatabase,
   ref,
   onValue,
-  set
+  set,
+  push
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -316,13 +357,25 @@ const firebaseConfig = {
   measurementId: "G-NC97X7G01N"
 };
 
+const CLOUD_NAME = "yuhskgwk";
+const UPLOAD_PRESET = "fatmam_fotograf";
+
 const fatmaInput = document.getElementById("fatmaDiary");
 const sametInput = document.getElementById("sametDiary");
 const message = document.getElementById("saveMessage");
+const uploadButton = document.getElementById("uploadButton");
+const photoFileInput = document.getElementById("photoFile");
+const uploadStatus = document.getElementById("uploadStatus");
+const saveDiaryButton = document.getElementById("saveDiaryButton");
+
+let database;
+let photoUploadInProgress = false;
 
 try {
   const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+  database = getDatabase(app);
+
+  // Ortak günlük
   const diaryRef = ref(database, "diary");
 
   onValue(diaryRef, (snapshot) => {
@@ -352,14 +405,110 @@ try {
 
       message.textContent = "❤️ Günlük kaydedildi! Diğer telefonda da güncellenecek.";
     } catch (error) {
-      message.textContent = "Kayıt yapılamadı. Firebase kurallarını kontrol et.";
+      message.textContent = "Kayıt yapılamadı. Bağlantı ayarlarını kontrol et.";
       console.error(error);
     }
   };
 
+  saveDiaryButton.addEventListener("click", () => window.saveDiary());
+
+  // Ortak fotoğraf galerisi
+  const photosRef = ref(database, "photos");
+
+  onValue(photosRef, (snapshot) => {
+    const data = snapshot.val() || {};
+
+    const photos = Object.entries(data)
+      .filter(([key, photo]) => photo && typeof photo.url === "string" &&
+        /^https:\/\/res\.cloudinary\.com\//.test(photo.url))
+      .map(([key, photo]) => ({
+        id: key,
+        url: photo.url,
+        createdAt: photo.createdAt || 0
+      }))
+      .sort((a, b) => a.createdAt - b.createdAt);
+
+    window.setOnlinePhotos(photos);
+    uploadStatus.textContent = "❤️ Ortak fotoğraf galerisi hazır.";
+  }, (error) => {
+    uploadStatus.textContent =
+      "Fotoğraf bağlantısı kurulamadı. Veritabanı ayarlarını kontrol et.";
+    console.error(error);
+  });
+
+  // Fotoğraf seçme ve yükleme
+  uploadButton.addEventListener("click", () => {
+    if (photoUploadInProgress) return;
+    photoFileInput.click();
+  });
+
+  photoFileInput.addEventListener("change", async () => {
+    const file = photoFileInput.files && photoFileInput.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      uploadStatus.textContent = "Lütfen bir fotoğraf dosyası seç.";
+      photoFileInput.value = "";
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      uploadStatus.textContent = "Fotoğraf en fazla 10 MB olabilir.";
+      photoFileInput.value = "";
+      return;
+    }
+
+    photoUploadInProgress = true;
+    uploadButton.disabled = true;
+    uploadButton.textContent = "⏳ Fotoğraf yükleniyor...";
+    uploadStatus.textContent = "Fotoğraf yükleniyor, lütfen bekle... ❤️";
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        { method: "POST", body: formData }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.secure_url) {
+        console.error("Cloudinary yanıtı:", result);
+        throw new Error(
+          result.error && result.error.message
+            ? result.error.message
+            : "Fotoğraf yüklenemedi. Yükleme ayarlarını kontrol et."
+        );
+      }
+
+      await push(photosRef, {
+        url: result.secure_url,
+        createdAt: Date.now()
+      });
+
+      uploadStatus.textContent =
+        "❤️ Fotoğraf eklendi! Diğer telefonda da görünmesi gerekiyor.";
+    } catch (error) {
+      console.error(error);
+      uploadStatus.textContent =
+        "Fotoğraf eklenemedi: " + error.message +
+        " — Ön ayar adını ve imzasız yükleme ayarını kontrol et.";
+    } finally {
+      photoUploadInProgress = false;
+      uploadButton.disabled = false;
+      uploadButton.textContent = "➕ Fotoğraf Ekle ❤️";
+      photoFileInput.value = "";
+    }
+  });
+
 } catch (error) {
-  message.textContent = "Firebase bağlantısı kurulamadı.";
   console.error(error);
+  message.textContent = "Ortak günlük bağlantısı kurulamadı.";
+  uploadStatus.textContent = "Fotoğraf bağlantısı kurulamadı.";
+  uploadButton.disabled = true;
 
   window.saveDiary = function() {
     message.textContent = "Bağlantı kurulamadığı için kayıt yapılamadı.";
