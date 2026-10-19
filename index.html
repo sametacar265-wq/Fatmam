@@ -3,7 +3,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<m"viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#e8a9c5">
 <title>❤️ FATMAM ❤️</title>
 
@@ -731,27 +731,4 @@ try {
     } catch (error) {
       console.error(error);
       uploadStatus.textContent =
-        "Fotoğraf eklenemedi: " + error.message +
-        " — Ön ayar adını ve imzasız yükleme ayarını kontrol et.";
-    } finally {
-      photoUploadInProgress = false;
-      uploadButton.disabled = false;
-      uploadButton.textContent = "➕ Fotoğraf Ekle ❤️";
-      photoFileInput.value = "";
-    }
-  });
-
-} catch (error) {
-  console.error(error);
-  message.textContent = "Ortak günlük bağlantısı kurulamadı.";
-  uploadStatus.textContent = "Fotoğraf bağlantısı kurulamadı.";
-  uploadButton.disabled = true;
-
-  window.saveDiary = function() {
-    message.textContent = "Bağlantı kurulamadığı için kayıt yapılamadı.";
-  };
-}
-</script>
-
-</body>
-</html>
+        "Fotoğraf
