@@ -1092,7 +1092,46 @@ try {
 
 
 </script>
+<audio id="muzik" src="IMG_2828_6.mp3" loop></audio>
 
+<button onclick="muzigiAc()" id="muzikButonu">
+  ▶
+</button>
+
+<script>
+function muzigiAc() {
+  const muzik = document.getElementById("muzik");
+  const buton = document.getElementById("muzikButonu");
+
+  if (muzik.paused) {
+    muzik.play().then(() => {
+      buton.textContent = "Ⅱ";
+    }).catch(() => {
+      alert("Şarkı açılamadı. MP3 dosyasını kontrol et.");
+    });
+  } else {
+    muzik.pause();
+    buton.textContent = "▶";
+  }
+}
+</script>
+
+<style>
+#muzikButonu {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #d96b9c;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 99999;
+}
+</style>
 </body>
 
 </html>
