@@ -8,783 +8,363 @@
 <title>❤️ FATMAM ❤️</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;font-family:Georgia,serif;color:#493442;background:linear-gradient(135deg,#f8c8dc,#d6d6dc,#edb2ca,#bcbcc6);background-size:300% 300%;animation:backgroundMove 12s ease infinite;overflow-x:hidden}
+@keyframes backgroundMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+#hearts{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.heart{position:absolute;top:-50px;color:rgba(221,65,133,.55);animation:fall linear forwards;user-select:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}
+main{position:relative;z-index:1;width:min(900px,92%);margin:auto;padding:35px 0 50px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.page{display:none;animation:appear .5s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.home{text-align:center}
+.small-heart{font-size:35px;margin-bottom:12px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.18)}}
+h1{font-size:clamp(38px,9vw,68px);color:#b82e70;text-shadow:2px 3px 12px #ffffffa8;margin-bottom:24px;letter-spacing:2px}
+.quote{max-width:650px;margin:0 auto 35px;font-size:clamp(18px,4vw,25px);line-height:1.8;font-style:italic;color:#51414b}
+.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:600px;margin:auto}
+.menu button{min-height:95px;font-size:clamp(17px,3.5vw,22px);font-weight:bold}
+button{font-family:inherit;border:1px solid #ffffffa6;border-radius:20px;padding:17px;cursor:pointer;color:#773c5a;background:rgba(255,255,255,.67);box-shadow:0 6px 20px #6f3c5220;transition:transform .25s,background .25s}
+button:hover{transform:translateY(-3px);background:#fff0f7}
+button:focus-visible{outline:3px solid #a92e69;outline-offset:3px}
+.page-title{text-align:center;color:#ad356d;font-size:clamp(30px,7vw,43px);margin:10px 0 25px}
+.back-button{display:block;margin:0 auto 24px 0;padding:12px 20px;font-size:16px}
+.content-card{width:100%;padding:clamp(20px,5vw,35px);border:1px solid #ffffffa8;border-radius:24px;background:rgba(255,255,255,.76);box-shadow:0 10px 35px #70475b20;backdrop-filter:blur(8px)}
+.poem{text-align:center;white-space:pre-line;overflow-wrap:anywhere;font-size:18px;line-height:1.9;margin-bottom:28px;padding-bottom:25px;border-bottom:1px solid #e8c3d4}
+.poem:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.poem h3{color:#bd427c;font-size:21px;margin-bottom:12px}
+.poem p{white-space:pre-line;text-align:center}
+.photo-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.photo-gallery img{display:block;width:100%;height:220px;object-fit:cover;border-radius:16px;border:2px solid white;box-shadow:0 5px 15px #70475b30;cursor:pointer;transition:transform .25s}
+.photo-gallery img:hover{transform:scale(1.03)}
+.gallery-caption{text-align:center;font-style:italic;margin-top:20px;line-height:1.7;color:#8a3560}
+.photo-viewer{display:none;position:fixed;inset:0;z-index:9999;background:rgba(25,12,22,.94);align-items:center;justify-content:center;padding:60px 55px}
+.photo-viewer.open{display:flex}
+.photo-viewer img{display:block;max-width:100%;max-height:78vh;object-fit:contain;border-radius:12px}
+.photo-viewer button{position:absolute;color:white;background:rgba(255,255,255,.18);border:1px solid #ffffff70;padding:10px 14px;border-radius:12px;font-size:18px}
+.photo-viewer .photo-close{top:12px;right:12px;font-size:24px}
+.photo-viewer .photo-prev{left:8px;top:50%;transform:translateY(-50%)}
+.photo-viewer .photo-next{right:8px;top:50%;transform:translateY(-50%)}
+.photo-counter{position:absolute;bottom:15px;left:0;right:0;color:white;text-align:center;font-size:15px}
+.daily-title{display:block;color:#b63c76;font-size:21px;margin:12px 0}
+.diary-input{display:block;width:100%;min-height:180px;margin:12px 0 25px;padding:16px;border:1px solid #e8b3cb;border-radius:15px;background:#fffafd;color:#493442;font:16px/1.7 Georgia,serif;resize:vertical}
+.diary-input:focus{outline:2px solid #d96b9c;border-color:transparent}
+.save-button{display:block;width:100%;background:#d96b9c;color:white;font-size:17px;font-weight:bold}
+.save-message{margin-top:14px;text-align:center;color:#8a3560;line-height:1.6}
+footer{text-align:center;padding-top:35px;font-size:14px;color:#70485c}
+@media(max-width:480px){
+main{width:91%;padding-top:25px}
+.menu{gap:12px}
+.menu button{min-height:85px;padding:12px 6px;border-radius:16px}
+.content-card{padding:20px 15px}
+.poem{font-size:17px}
+.photo-gallery{gap:9px}
+.photo-gallery img{height:170px}
+.photo-viewer{padding:55px 42px}
 }
-
-body {
-    min-height: 100vh;
-    font-family: Georgia, serif;
-    color: #493442;
-    background: linear-gradient(135deg, #f8c8dc, #d6d6dc, #edb2ca, #bcbcc6);
-    background-size: 300% 300%;
-    animation: backgroundMove 12s ease infinite;
-    overflow-x: hidden;
-}
-
-@keyframes backgroundMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-#hearts {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.heart {
-    position: absolute;
-    top: -50px;
-    color: rgba(221, 65, 133, 0.55);
-    animation: fall linear forwards;
-    user-select: none;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-main {
-    position: relative;
-    z-index: 1;
-    width: min(900px, 92%);
-    margin: auto;
-    padding: 35px 0 50px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.page {
-    display: none;
-    animation: appear 0.5s ease;
-}
-
-.page.active {
-    display: block;
-}
-
-@keyframes appear {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.home {
-    text-align: center;
-}
-
-.small-heart {
-    font-size: 35px;
-    margin-bottom: 12px;
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    50% { transform: scale(1.18); }
-}
-
-h1 {
-    font-size: clamp(38px, 9vw, 68px);
-    color: #b82e70;
-    text-shadow: 2px 3px 12px #ffffffa8;
-    margin-bottom: 24px;
-    letter-spacing: 2px;
-}
-
-.quote {
-    max-width: 650px;
-    margin: 0 auto 35px;
-    font-size: clamp(18px, 4vw, 25px);
-    line-height: 1.8;
-    font-style: italic;
-    color: #51414b;
-}
-
-.menu {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    max-width: 600px;
-    margin: auto;
-}
-
-.menu button {
-    min-height: 95px;
-    font-size: clamp(17px, 3.5vw, 22px);
-    font-weight: bold;
-}
-
-button {
-    font-family: inherit;
-    border: 1px solid #ffffffa6;
-    border-radius: 20px;
-    padding: 17px;
-    cursor: pointer;
-    color: #773c5a;
-    background: rgba(255, 255, 255, 0.67);
-    box-shadow: 0 6px 20px #6f3c5220;
-    transition: transform 0.25s, background 0.25s;
-}
-
-button:hover {
-    transform: translateY(-3px);
-    background: #fff0f7;
-}
-
-button:focus-visible {
-    outline: 3px solid #a92e69;
-    outline-offset: 3px;
-}
-
-.page-title {
-    text-align: center;
-    color: #ad356d;
-    font-size: clamp(30px, 7vw, 43px);
-    margin: 10px 0 25px;
-}
-
-.back-button {
-    display: block;
-    margin: 0 auto 24px 0;
-    padding: 12px 20px;
-    font-size: 16px;
-}
-
-.content-card {
-    width: 100%;
-    padding: clamp(20px, 5vw, 35px);
-    border: 1px solid #ffffffa8;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.76);
-    box-shadow: 0 10px 35px #70475b20;
-    backdrop-filter: blur(8px);
-}
-
-.poem {
-    text-align: center;
-    white-space: pre-line;
-    overflow-wrap: anywhere;
-    font-size: 18px;
-    line-height: 1.9;
-    margin-bottom: 28px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #e8c3d4;
-}
-
-.poem:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.poem h3 {
-    color: #bd427c;
-    font-size: 21px;
-    margin-bottom: 12px;
-}
-
-.poem p {
-    white-space: pre-line;
-    text-align: center;
-}
-
-/* FOTOĞRAF GALERİSİ */
-.photo-gallery {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.photo-gallery img {
-    display: block;
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 16px;
-    border: 2px solid white;
-    box-shadow: 0 5px 15px #70475b30;
-    cursor: pointer;
-    transition: transform 0.25s;
-}
-
-.photo-gallery img:hover {
-    transform: scale(1.03);
-}
-
-.gallery-caption {
-    text-align: center;
-    font-style: italic;
-    margin-top: 20px;
-    line-height: 1.7;
-    color: #8a3560;
-}
-
-/* BÜYÜK FOTOĞRAF EKRANI */
-.photo-viewer {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(25, 12, 22, 0.94);
-    align-items: center;
-    justify-content: center;
-    padding: 60px 55px;
-}
-
-.photo-viewer.open {
-    display: flex;
-}
-
-.photo-viewer img {
-    display: block;
-    max-width: 100%;
-    max-height: 78vh;
-    object-fit: contain;
-    border-radius: 12px;
-}
-
-.photo-viewer button {
-    position: absolute;
-    color: white;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid #ffffff70;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 18px;
-}
-
-.photo-viewer .photo-close {
-    top: 12px;
-    right: 12px;
-    font-size: 24px;
-}
-
-.photo-viewer .photo-prev {
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.photo-viewer .photo-next {
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.photo-counter {
-    position: absolute;
-    bottom: 15px;
-    left: 0;
-    right: 0;
-    color: white;
-    text-align: center;
-    font-size: 15px;
-}
-
-.daily-title {
-    display: block;
-    color: #b63c76;
-    font-size: 21px;
-    margin: 12px 0;
-}
-
-.diary-input {
-    display: block;
-    width: 100%;
-    min-height: 180px;
-    margin: 12px 0 25px;
-    padding: 16px;
-    border: 1px solid #e8b3cb;
-    border-radius: 15px;
-    background: #fffafd;
-    color: #493442;
-    font: 16px/1.7 Georgia, serif;
-    resize: vertical;
-}
-
-.diary-input:focus {
-    outline: 2px solid #d96b9c;
-    border-color: transparent;
-}
-
-.save-button {
-    display: block;
-    width: 100%;
-    background: #d96b9c;
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-}
-
-.save-message {
-    margin-top: 14px;
-    text-align: center;
-    color: #8a3560;
-    line-height: 1.6;
-}
-
-footer {
-    text-align: center;
-    padding-top: 35px;
-    font-size: 14px;
-    color: #70485c;
-}
-
-@media (max-width: 480px) {
-    main {
-        width: 91%;
-        padding-top: 25px;
-    }
-
-    .menu {
-        gap: 12px;
-    }
-
-    .menu button {
-        min-height: 85px;
-        padding: 12px 6px;
-        border-radius: 16px;
-    }
-
-    .content-card {
-        padding: 20px 15px;
-    }
-
-    .poem {
-        font-size: 17px;
-    }
-
-    .photo-gallery {
-        gap: 9px;
-    }
-
-    .photo-gallery img {
-        height: 170px;
-    }
-
-    .photo-viewer {
-        padding: 55px 42px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
+@media(prefers-reduced-motion:reduce){
+*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 </style>
 </head>
 
 <body>
-
 <div id="hearts" aria-hidden="true"></div>
-
 <main>
 
-    <!-- ANA SAYFA -->
-    <section id="home" class="page active home">
-        <div class="small-heart">❤️</div>
-        <h1>❤️ FATMAM ❤️</h1>
+<section id="home" class="page active home">
+<div class="small-heart">❤️</div>
+<h1>❤️ FATMAM ❤️</h1>
+<p class="quote">
+Bu dünyada binlerce yol var,
+ama kalbim her seferinde sana çıkıyor,
+Fatmam. ❤️
+</p>
+<nav class="menu" aria-label="Site menüsü">
+<button onclick="openPage('photos')">📸<br>Fotoğraflar</button>
+<button onclick="openPage('poems')">📜<br>Şiirler</button>
+<button onclick="openPage('acrostics')">📝<br>Akrostişler</button>
+<button onclick="openPage('diary')">📖<br>Günlük</button>
+</nav>
+<footer>Bir kalp, bir isim, kocaman bir sevgi... ❤️</footer>
+</section>
 
-        <p class="quote">
-            Bu dünyada binlerce yol var,
-            ama kalbim her seferinde sana çıkıyor,
-            Fatmam. ❤️
-        </p>
+<section id="photos" class="page">
+<button class="back-button" onclick="goBack()">← Geri dön</button>
+<h2 class="page-title">📸 Fotoğraflarımız ❤️</h2>
+<div class="content-card">
+<div class="photo-gallery">
+<img src="3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png" alt="Anımız 1" loading="lazy" onclick="openPhoto(0)">
+<img src="5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg" alt="Anımız 2" loading="lazy" onclick="openPhoto(1)">
+<img src="671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png" alt="Anımız 3" loading="lazy" onclick="openPhoto(2)">
+<img src="E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg" alt="Anımız 4" loading="lazy" onclick="openPhoto(3)">
+<img src="IMG_2794.jpeg" alt="Anımız 5" loading="lazy" onclick="openPhoto(4)">
+</div>
+<p class="gallery-caption">Her fotoğraf, seninle güzel bir anı... ❤️</p>
+</div>
+</section>
 
-        <nav class="menu" aria-label="Site menüsü">
-            <button onclick="openPage('photos')">📸<br>Fotoğraflar</button>
-            <button onclick="openPage('poems')">📜<br>Şiirler</button>
-            <button onclick="openPage('acrostics')">📝<br>Akrostişler</button>
-            <button onclick="openPage('diary')">📖<br>Günlük</button>
-        </nav>
-
-        <footer>Bir kalp, bir isim, kocaman bir sevgi... ❤️</footer>
-    </section>
-
-    <!-- FOTOĞRAFLAR -->
-    <section id="photos" class="page">
-        <button class="back-button" onclick="goBack()">← Geri dön</button>
-        <h2 class="page-title">📸 Fotoğraflarımız ❤️</h2>
-
-        <div class="content-card">
-            <div class="photo-gallery">
-
-                <img
-                    src="3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png"
-                    alt="Anımız 1"
-                    loading="lazy"
-                    onclick="openPhoto(0)"
-                >
-
-                <img
-                    src="5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg"
-                    alt="Anımız 2"
-                    loading="lazy"
-                    onclick="openPhoto(1)"
-                >
-
-                <img
-                    src="671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png"
-                    alt="Anımız 3"
-                    loading="lazy"
-                    onclick="openPhoto(2)"
-                >
-
-                <img
-                    src="E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg"
-                    alt="Anımız 4"
-                    loading="lazy"
-                    onclick="openPhoto(3)"
-                >
-
-                <img
-                    src="IMG_2794.jpeg"
-                    alt="Anımız 5"
-                    loading="lazy"
-                    onclick="openPhoto(4)"
-                >
-
-            </div>
-
-            <p class="gallery-caption">
-                Her fotoğraf, seninle güzel bir anı... ❤️
-            </p>
-        </div>
-    </section>
-
-    <!-- ŞİİRLER -->
-    <section id="poems" class="page">
-        <button class="back-button" onclick="goBack()">← Geri dön</button>
-        <h2 class="page-title">📜 Sana Yazdığım Şiirler</h2>
-
-        <div class="content-card">
-            <article class="poem">
-                <h3>Bir Tebessümün</h3>
+<section id="poems" class="page">
+<button class="back-button" onclick="goBack()">← Geri dön</button>
+<h2 class="page-title">📜 Sana Yazdığım Şiirler</h2>
+<div class="content-card">
+<article class="poem">
+<h3>Bir Tebessümün</h3>
 Bir tebessümün yeter,
 Karanlık geceme güneş doğar.
 Sen elimi tuttuğunda,
 Bütün dünya bir anlığına durar.
-            </article>
-
-            <article class="poem">
-                <h3>En Güzel Mevsimim</h3>
+</article>
+<article class="poem">
+<h3>En Güzel Mevsimim</h3>
 Adını rüzgâra fısıldadım bu gece,
 Yıldızlar senin gibi gülümsedi bana.
 Ömrümün en güzel mevsimi,
 Anladım ki sen geldiğin gün başladı.
-            </article>
-
-            <article class="poem">
-                <h3>Her Zaman</h3>
+</article>
+<article class="poem">
+<h3>Her Zaman</h3>
 Kalbim seninle çarpmayı öğrendi,
 Gözlerin gözlerime değdiği an.
 Sözler tükense bile içimde,
 Seni seveceğim her zaman.
-            </article>
-        </div>
-    </section>
+</article>
+</div>
+</section>
 
-    <!-- AKROSTİŞLER -->
-    <section id="acrostics" class="page">
-        <button class="back-button" onclick="goBack()">← Geri dön</button>
-        <h2 class="page-title">📝 Fatmam'a Akrostişler</h2>
-
-        <div class="content-card">
-            <article class="poem">
-                <h3>❤️ 1. Ömürlük Sevgim</h3>
-                <p>Fırtınalı dünyamda tek sığınağım,
+<section id="acrostics" class="page">
+<button class="back-button" onclick="goBack()">← Geri dön</button>
+<h2 class="page-title">📝 Fatmam'a Akrostişler</h2>
+<div class="content-card">
+<article class="poem">
+<h3>❤️ 1. Ömürlük Sevgim</h3>
+<p>Fırtınalı dünyamda tek sığınağım,
 Aşkınla aydınlanır her bir sabahım.
 Tut ellerimi, hiç bırakma ne olur,
 Masmavi gökyüzüm, en güzel baharım.
 Adı bir ömür kalbime kazınan yarim.</p>
-            </article>
-
-            <article class="poem">
-                <h3>❤️ 2. Kalbimi Çaldın</h3>
-                <p>Farkında olmadan çaldın kalbimi,
+</article>
+<article class="poem">
+<h3>❤️ 2. Kalbimi Çaldın</h3>
+<p>Farkında olmadan çaldın kalbimi,
 Anlatamam içimdeki bu derin sevgiyi.
 Tüm yollarım sana çıkıyor her gece,
 Mutluluk seninle bir ömür sadece.
 Aşkınla yeşerdi ömrümün her yeri.</p>
-            </article>
-
-            <article class="poem">
-                <h3>❤️ 3. Kalbimin Sahibi</h3>
-                <p>Fısıldar rüzgâr adını gecenin en derininde,
+</article>
+<article class="poem">
+<h3>❤️ 3. Kalbimin Sahibi</h3>
+<p>Fısıldar rüzgâr adını gecenin en derininde,
 Aşkın alevi yanar her an yüreğimde.
 Tüm dünyayı unutturan o sıcacık gülüşün,
 Mevsim bahara döner sen yanımda olduğun gün.
 Aşkınla atan bu kalbin tek sahibisin.</p>
-            </article>
-
-            <article class="poem">
-                <h3>❤️ 4. Tek İmzamsın</h3>
-                <p>Farkında olmadan değişir etrafındaki tüm hava,
+</article>
+<article class="poem">
+<h3>❤️ 4. Tek İmzamsın</h3>
+<p>Farkında olmadan değişir etrafındaki tüm hava,
 Aşırı bir zarafet, sessiz ama derin bir iddia.
 Tarzınla, bakışınla kuralları yeniden yazarsın,
 Müptelası olunan en gizemli rüyasın.
 Aklımı başımdan alan o tek imzamsın.</p>
-            </article>
-        </div>
-    </section>
+</article>
+</div>
+</section>
 
-    <!-- GÜNLÜK -->
-    <section id="diary" class="page">
-        <button class="back-button" onclick="goBack()">← Geri dön</button>
-        <h2 class="page-title">📖 Bizim Günlüğümüz</h2>
-
-        <div class="content-card">
-            <label class="daily-title" for="fatmaDiary">
-                💗 Fatma'nın Günlüğü
-            </label>
-
-            <textarea
-                id="fatmaDiary"
-                class="diary-input"
-                placeholder="Fatma'nın düşüncelerini buraya yaz..."
-            ></textarea>
-
-            <label class="daily-title" for="sametDiary">
-                💙 Samet'in Günlüğü
-            </label>
-
-            <textarea
-                id="sametDiary"
-                class="diary-input"
-                placeholder="Samet'in düşüncelerini buraya yaz..."
-            ></textarea>
-
-            <button class="save-button" onclick="saveDiary()">
-                💾 Günlüğü Kaydet
-            </button>
-
-            <p id="saveMessage" class="save-message" aria-live="polite"></p>
-        </div>
-    </section>
-
+<section id="diary" class="page">
+<button class="back-button" onclick="goBack()">← Geri dön</button>
+<h2 class="page-title">📖 Bizim Günlüğümüz</h2>
+<div class="content-card">
+<label class="daily-title" for="fatmaDiary">💗 Fatma'nın Günlüğü</label>
+<textarea id="fatmaDiary" class="diary-input" placeholder="Fatma'nın düşüncelerini buraya yaz..."></textarea>
+<label class="daily-title" for="sametDiary">💙 Samet'in Günlüğü</label>
+<textarea id="sametDiary" class="diary-input" placeholder="Samet'in düşüncelerini buraya yaz..."></textarea>
+<button class="save-button" onclick="saveDiary()">💾 Günlüğü Kaydet</button>
+<p id="saveMessage" class="save-message" aria-live="polite">Günlük bağlantısı kuruluyor...</p>
+</div>
+</section>
 </main>
 
-<!-- FOTOĞRAFI BÜYÜK GÖSTER -->
-<div
-    id="photoViewer"
-    class="photo-viewer"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Fotoğraf görüntüleyici"
-    onclick="if(event.target === this) closePhoto()"
->
-    <button
-        class="photo-close"
-        onclick="closePhoto()"
-        aria-label="Kapat"
-    >✕</button>
-
-    <button
-        class="photo-prev"
-        onclick="changePhoto(-1)"
-        aria-label="Önceki fotoğraf"
-    >❮</button>
-
-    <img id="largePhoto" src="" alt="Büyük fotoğraf">
-
-    <button
-        class="photo-next"
-        onclick="changePhoto(1)"
-        aria-label="Sonraki fotoğraf"
-    >❯</button>
-
-    <div id="photoCounter" class="photo-counter">1 / 5</div>
+<div id="photoViewer" class="photo-viewer" role="dialog" aria-modal="true" aria-label="Fotoğraf görüntüleyici" onclick="if(event.target === this) closePhoto()">
+<button class="photo-close" onclick="closePhoto()" aria-label="Kapat">✕</button>
+<button class="photo-prev" onclick="changePhoto(-1)" aria-label="Önceki fotoğraf">❮</button>
+<img id="largePhoto" src="" alt="Büyük fotoğraf">
+<button class="photo-next" onclick="changePhoto(1)" aria-label="Sonraki fotoğraf">❯</button>
+<div id="photoCounter" class="photo-counter">1 / 5</div>
 </div>
 
 <script>
-/* FOTOĞRAF LİSTESİ */
 const photoFiles = [
-    "3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png",
-    "5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg",
-    "671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png",
-    "E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg",
-    "IMG_2794.jpeg"
+"3871495B-ECFC-4A68-94BE-8A1F1D80CB27.png",
+"5D49E874-4161-4D13-A13E-9DDDBDA04A63.jpeg",
+"671D8F49-450C-4C9C-BDBE-1A5BFB8089BB.png",
+"E580BBCA-BB90-4AAA-A09A-D2AC4EB3A715.jpeg",
+"IMG_2794.jpeg"
 ];
 
 let currentPhoto = 0;
 
 function openPhoto(index) {
-    currentPhoto = index;
-    showLargePhoto();
-
-    document.getElementById("photoViewer").classList.add("open");
-    document.body.style.overflow = "hidden";
+currentPhoto = index;
+showLargePhoto();
+document.getElementById("photoViewer").classList.add("open");
+document.body.style.overflow = "hidden";
 }
 
 function showLargePhoto() {
-    const image = document.getElementById("largePhoto");
-
-    image.src = photoFiles[currentPhoto];
-    image.alt = "Fotoğraf " + (currentPhoto + 1);
-
-    document.getElementById("photoCounter").textContent =
-        (currentPhoto + 1) + " / " + photoFiles.length;
+document.getElementById("largePhoto").src = photoFiles[currentPhoto];
+document.getElementById("largePhoto").alt = "Fotoğraf " + (currentPhoto + 1);
+document.getElementById("photoCounter").textContent =
+(currentPhoto + 1) + " / " + photoFiles.length;
 }
 
 function changePhoto(direction) {
-    currentPhoto =
-        (currentPhoto + direction + photoFiles.length)
-        % photoFiles.length;
-
-    showLargePhoto();
+currentPhoto = (currentPhoto + direction + photoFiles.length) % photoFiles.length;
+showLargePhoto();
 }
 
 function closePhoto() {
-    document.getElementById("photoViewer").classList.remove("open");
-    document.body.style.overflow = "";
+document.getElementById("photoViewer").classList.remove("open");
+document.body.style.overflow = "";
 }
 
 document.addEventListener("keydown", function(event) {
-    if (!document.getElementById("photoViewer").classList.contains("open")) {
-        return;
-    }
-
-    if (event.key === "Escape") closePhoto();
-    if (event.key === "ArrowRight") changePhoto(1);
-    if (event.key === "ArrowLeft") changePhoto(-1);
+if (!document.getElementById("photoViewer").classList.contains("open")) return;
+if (event.key === "Escape") closePhoto();
+if (event.key === "ArrowRight") changePhoto(1);
+if (event.key === "ArrowLeft") changePhoto(-1);
 });
 
-/* SAYFALAR ARASI GEÇİŞ */
 function openPage(pageId) {
-    const target = document.getElementById(pageId);
-
-    if (!target || !target.classList.contains("page")) return;
-
-    history.pushState({ page: pageId }, "", "#" + pageId);
-    showPage(pageId);
+const target = document.getElementById(pageId);
+if (!target || !target.classList.contains("page")) return;
+history.pushState({page:pageId}, "", "#" + pageId);
+showPage(pageId);
 }
 
 function showPage(pageId) {
-    const target = document.getElementById(pageId);
-
-    if (!target || !target.classList.contains("page")) {
-        pageId = "home";
-    }
-
-    document.querySelectorAll(".page").forEach(page => {
-        page.classList.remove("active");
-    });
-
-    document.getElementById(pageId).classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+const target = document.getElementById(pageId);
+if (!target || !target.classList.contains("page")) pageId = "home";
+document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+document.getElementById(pageId).classList.add("active");
+window.scrollTo({top:0, behavior:"smooth"});
 }
 
 function goBack() {
-    if (history.state && history.state.page &&
-        history.state.page !== "home") {
-        history.back();
-    } else {
-        history.replaceState({ page: "home" }, "", "#home");
-        showPage("home");
-    }
+if (history.state && history.state.page && history.state.page !== "home") {
+history.back();
+} else {
+history.replaceState({page:"home"}, "", "#home");
+showPage("home");
+}
 }
 
 window.addEventListener("popstate", event => {
-    const pageId = event.state && event.state.page
-        ? event.state.page
-        : "home";
-
-    showPage(pageId);
+showPage(event.state && event.state.page ? event.state.page : "home");
 });
 
-/* SAYFA DOĞRUDAN AÇILIRSA */
 (function initializePage() {
-    const pageId = window.location.hash.slice(1);
-    const target = document.getElementById(pageId);
-
-    if (target && target.classList.contains("page")) {
-        history.replaceState({ page: pageId }, "", "#" + pageId);
-        showPage(pageId);
-    } else {
-        history.replaceState({ page: "home" }, "", "#home");
-        showPage("home");
-    }
+const pageId = window.location.hash.slice(1);
+const target = document.getElementById(pageId);
+if (target && target.classList.contains("page")) {
+history.replaceState({page:pageId}, "", "#" + pageId);
+showPage(pageId);
+} else {
+history.replaceState({page:"home"}, "", "#home");
+showPage("home");
+}
 })();
 
-/* DÜŞEN KALPLER */
 const heartContainer = document.getElementById("hearts");
-const heartSymbols = ["❤️", "💕", "💗", "💖", "♥"];
+const heartSymbols = ["❤️","💕","💗","💖","♥"];
 
 function createHeart() {
-    const heart = document.createElement("span");
-    heart.className = "heart";
-
-    heart.textContent =
-        heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (12 + Math.random() * 18) + "px";
-    heart.style.animationDuration = (6 + Math.random() * 7) + "s";
-    heart.style.opacity = (0.3 + Math.random() * 0.5).toString();
-
-    heartContainer.appendChild(heart);
-
-    heart.addEventListener("animationend", () => heart.remove());
+const heart = document.createElement("span");
+heart.className = "heart";
+heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+heart.style.left = Math.random() * 100 + "vw";
+heart.style.fontSize = (12 + Math.random() * 18) + "px";
+heart.style.animationDuration = (6 + Math.random() * 7) + "s";
+heart.style.opacity = (0.3 + Math.random() * 0.5).toString();
+heartContainer.appendChild(heart);
+heart.addEventListener("animationend", () => heart.remove());
 }
 
-for (let i = 0; i < 18; i++) {
-    setTimeout(createHeart, i * 300);
-}
-
+for (let i = 0; i < 18; i++) setTimeout(createHeart, i * 300);
 setInterval(createHeart, 650);
+</script>
 
-/* GÜNLÜĞÜ YÜKLE */
-function loadDiary() {
-    try {
-        document.getElementById("fatmaDiary").value =
-            localStorage.getItem("fatmaDiary") || "";
+<!-- Firebase ortak günlük bağlantısı -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
-        document.getElementById("sametDiary").value =
-            localStorage.getItem("sametDiary") || "";
-    } catch (error) {
-        document.getElementById("saveMessage").textContent =
-            "Günlük kayıtlarına bu tarayıcıdan erişilemiyor.";
+const firebaseConfig = {
+  apiKey: "AIzaSyDfl-Aih3nAsO0IfPmCqlm7Lx5YwNp3OTE",
+  authDomain: "fatmam-gunluk.firebaseapp.com",
+  databaseURL: "https://fatmam-gunluk-default-rtdb.firebaseio.com",
+  projectId: "fatmam-gunluk",
+  storageBucket: "fatmam-gunluk.firebasestorage.app",
+  messagingSenderId: "1015746572045",
+  appId: "1:1015746572045:web:798c41a67cc5428c454a44",
+  measurementId: "G-NC97X7G01N"
+};
+
+const fatmaInput = document.getElementById("fatmaDiary");
+const sametInput = document.getElementById("sametDiary");
+const message = document.getElementById("saveMessage");
+
+try {
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const diaryRef = ref(database, "diary");
+
+  onValue(diaryRef, (snapshot) => {
+    const data = snapshot.val() || {};
+
+    if (document.activeElement !== fatmaInput) {
+      fatmaInput.value = data.fatma || "";
     }
-}
 
-/* GÜNLÜĞÜ KAYDET */
-function saveDiary() {
-    const message = document.getElementById("saveMessage");
+    if (document.activeElement !== sametInput) {
+      sametInput.value = data.samet || "";
+    }
+
+    message.textContent = "❤️ Ortak günlük bağlandı ve güncellendi.";
+  }, (error) => {
+    message.textContent = "Günlük yüklenemedi: " + error.message;
+  });
+
+  window.saveDiary = async function() {
+    message.textContent = "Kaydediliyor...";
 
     try {
-        localStorage.setItem(
-            "fatmaDiary",
-            document.getElementById("fatmaDiary").value
-        );
+      await set(diaryRef, {
+        fatma: fatmaInput.value,
+        samet: sametInput.value
+      });
 
-        localStorage.setItem(
-            "sametDiary",
-            document.getElementById("sametDiary").value
-        );
-
-        message.textContent =
-            "❤️ Günlüğünüz bu cihazda kaydedildi!";
+      message.textContent = "❤️ Günlük kaydedildi! Diğer telefonda da güncellenecek.";
     } catch (error) {
-        message.textContent =
-            "Kayıt yapılamadı. Tarayıcı depolama ayarlarını kontrol edin.";
+      message.textContent = "Kayıt yapılamadı. Firebase kurallarını kontrol et.";
+      console.error(error);
     }
-}
+  };
 
-loadDiary();
+} catch (error) {
+  message.textContent = "Firebase bağlantısı kurulamadı.";
+  console.error(error);
+
+  window.saveDiary = function() {
+    message.textContent = "Bağlantı kurulamadığı için kayıt yapılamadı.";
+  };
+}
 </script>
 
 </body>
