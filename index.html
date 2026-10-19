@@ -1090,6 +1090,7 @@ try {
 
 }
 
+
 </script>
 
 <style>
@@ -1097,57 +1098,57 @@ try {
   position: fixed;
   right: 10px;
   bottom: 10px;
-  z-index: 9999;
+  z-index: 99999;
   width: 34px;
   height: 34px;
-  padding: 0;
-  border: 1px solid #ffffff80;
+  border: none;
   border-radius: 50%;
   background: #d96b9c;
   color: white;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 2px 8px #0002;
 }
-#miniMusicFrame {
+#miniMusicPlayer {
   position: fixed;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-  right: 0;
-  bottom: 0;
+  width: 280px;
+  height: 158px;
+  right: 10px;
+  bottom: 52px;
+  z-index: 99998;
+  display: none;
+  border: 0;
+  border-radius: 10px;
 }
 </style>
 
-<button id="miniMusicButton" aria-label="Müziği aç veya durdur">
-  🎵
-</button>
+<button id="miniMusicButton" type="button">🎵</button>
 
 <iframe
-  id="miniMusicFrame"
-  allow="autoplay; encrypted-media"
-  src="about:blank"
-></iframe>
+  id="miniMusicPlayer"
+  title="YouTube müzik oynatıcısı"
+  allow="autoplay; encrypted-media; picture-in-picture"
+  allowfullscreen>
+</iframe>
 
 <script>
-(() => {
+(function () {
   const button = document.getElementById("miniMusicButton");
-  const frame = document.getElementById("miniMusicFrame");
+  const player = document.getElementById("miniMusicPlayer");
   let playing = false;
 
-  button.addEventListener("click", () => {
-    playing = !playing;
-
-    frame.src = playing
-         ? "https://www.youtube-nocookie.com/embed/p3-OyMmUQ0w?autoplay=1"
-      : "about:blank";
-
-    button.textContent = playing ? "⏸" : "🎵";
-    button.setAttribute(
-      "aria-label",
-      playing ? "Müziği durdur" : "Müziği aç"
-    );
+  button.addEventListener("click", function () {
+    if (!playing) {
+      player.src =
+        "https://www.youtube.com/embed/p3-OyMmUQ0w?autoplay=1&playsinline=1";
+      player.style.display = "block";
+      button.textContent = "⏸";
+      playing = true;
+    } else {
+      player.src = "";
+      player.style.display = "none";
+      button.textContent = "🎵";
+      playing = false;
+    }
   });
 })();
 </script>
