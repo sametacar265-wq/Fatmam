@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -27,7 +28,7 @@ h1{font-size:clamp(38px,9vw,68px);color:#b82e70;text-shadow:2px 3px 12px #ffffff
 button{font-family:inherit;border:1px solid #ffffffa6;border-radius:20px;padding:17px;cursor:pointer;color:#773c5a;background:rgba(255,255,255,.67);box-shadow:0 6px 20px #6f3c5220;transition:transform .25s,background .25s}
 button:hover{transform:translateY(-3px);background:#fff0f7}
 button:focus-visible{outline:3px solid #a92e69;outline-offset:3px}
-button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .page-title{text-align:center;color:#ad356d;font-size:clamp(30px,7vw,43px);margin:10px 0 25px}
 .back-button{display:block;margin:0 auto 24px 0;padding:12px 20px;font-size:16px}
 .content-card{width:100%;padding:clamp(20px,5vw,35px);border:1px solid #ffffffa8;border-radius:24px;background:rgba(255,255,255,.76);box-shadow:0 10px 35px #70475b20;backdrop-filter:blur(8px)}
@@ -102,6 +103,31 @@ footer{text-align:center;padding-top:35px;font-size:14px;color:#70485c}
 .secret-signature{text-align:right!important;color:#b82e70;font-style:italic;font-weight:bold;margin-top:30px}
 .secret-lock-icon{font-size:48px;margin-bottom:18px}
 
+/* MÜZİK ÖNERİLERİ */
+.music-suggest-button{
+ display:block;width:min(300px,90%);margin:13px auto 0;padding:15px;
+ border:1px solid #fff;border-radius:18px;
+ background:linear-gradient(135deg,#fff7fb,#f7d5e5);
+ color:#a52e69;font-size:18px;font-weight:bold;
+}
+.music-form{display:grid;gap:10px;margin-bottom:25px}
+.music-form label{color:#8a3560;font-weight:bold;margin-top:5px}
+.music-form input,.music-form select{
+ width:100%;padding:13px;border:1px solid #e8b3cb;
+ border-radius:12px;background:#fffafd;color:#493442;
+ font:16px Georgia,serif;
+}
+.music-add-button{width:100%;background:#d96b9c;color:white;font-weight:bold}
+.music-status{margin:12px 0;text-align:center;line-height:1.6;color:#8a3560;font-size:14px;overflow-wrap:anywhere}
+.music-section-title{color:#ad356d;margin:25px 0 12px;font-size:21px}
+.music-list{display:grid;gap:16px}
+.music-item{padding:15px;border-radius:16px;background:#fff7fb;border:1px solid #f0d3e0;overflow:hidden}
+.music-item h3{color:#ad356d;font-size:18px;margin-bottom:12px;overflow-wrap:anywhere}
+.music-item iframe{display:block;width:100%;height:152px;border:0;border-radius:12px}
+.music-link{display:inline-block;margin-top:12px;color:#a52e69;font-weight:bold;overflow-wrap:anywhere}
+.music-date{margin-top:8px;color:#997285;font-size:12px}
+.music-note{text-align:center;line-height:1.8;margin-bottom:20px}
+
 @media(max-width:480px){
  main{width:91%;padding-top:25px}
  .menu{gap:12px}
@@ -137,6 +163,7 @@ footer{text-align:center;padding-top:35px;font-size:14px;color:#70485c}
 </nav>
 
 <button class="secret-letter-button" onclick="openPage('secretLetter')">💌 Gizli Mektup</button>
+<button class="music-suggest-button" onclick="openPage('music')">🎶🎤 Müzik Öner</button>
 
 <footer>Bir kalp, bir isim, kocaman bir sevgi... ❤️</footer>
 </section>
@@ -204,25 +231,9 @@ footer{text-align:center;padding-top:35px;font-size:14px;color:#70485c}
 
 <div class="content-card secret-lock" id="secretLock">
 <div class="secret-lock-icon">🔐</div>
-<p>
-Bu mektup yalnızca sana özel, canım Fatma'm. ❤️
-<br><br>
-Kalbimden gelen satırları okumak için şifreyi gir.
-</p>
-
+<p>Bu mektup yalnızca sana özel, canım Fatma'm. ❤️<br><br>Kalbimden gelen satırları okumak için şifreyi gir.</p>
 <form id="secretPasswordForm">
-<input
-id="secretPassword"
-class="secret-password"
-type="password"
-inputmode="numeric"
-maxlength="6"
-pattern="[0-9]{6}"
-placeholder="••••••"
-aria-label="Mektup şifresi"
-autocomplete="off"
-required
->
+<input id="secretPassword" class="secret-password" type="password" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="••••••" aria-label="Mektup şifresi" autocomplete="off" required>
 <button class="secret-open-button" type="submit">💌 Mektubu Aç</button>
 </form>
 <p id="secretMessage" class="secret-message" aria-live="polite"></p>
@@ -230,23 +241,56 @@ required
 
 <article class="secret-letter" id="secretLetterContent">
 <h3>💗 Canım Fatma’m 💗</h3>
-
 <p>Canım Fatma’m,
 
 Bazen insan dünyadaki binlerce kelime arasından kalbindekileri anlatacak doğru olanları seçmekte zorlanır ya, işte seni düşünürken tam olarak bunu yaşıyorum. Çünkü sana olan sevgim, sadece söze sığacak kadar basit değil; bir ömre yayılacak kadar derin ve köklü.</p>
-
 <p>11 Ekim… Hayatımın dönüm noktası, seninle ilk karşılaştığımız, dünyamın renginin değiştiği o büyülü gün. O gün kalbime düşen ilk kıvılcım, bugün içimi ısıtan koskocaman bir aşka dönüştü. Sen benim hayatıma girdiğin günden beri gökyüzünün mavisi daha parlak, sabahların kokusu daha huzurlu geliyor.</p>
-
 <p>Bir gülüşünle içimdeki tüm fırtınaları dindiren, bakışınla dünyamı aydınlatansın. Kalbimin en güvenli, en güzel köşesi sensin. Hayatın koşturmacası ve yorgunluğu içinde, ruhumun soluklandığı en tatlı durak hep senin yanın oldu.</p>
-
 <p>İyi ki o 11 Ekim’de kader yollarımızı birleştirdi, iyi ki varsın Fatma’m… İyi ki ellerin ellerimde, iyi ki adın kalbimin her atışında benimle. Sen sadece sevdiğim kadın değil; hayatımın en güzel hediyesi, yarınlarıma dair kurduğum en tatlı hayalsin.</p>
-
 <p>Seni 11 Ekim’de başlayan o ilk heyecanla ve her geçen gün katlanan derin bir aşkla seviyorum.</p>
-
 <p class="secret-signature">Daima seninkisi, ❤️</p>
-
 <button class="secret-open-button" onclick="lockSecretLetter()" style="margin-top:15px">🔒 Mektubu Kapat</button>
 </article>
+</section>
+
+<!-- YENİ MÜZİK ÖNERİ SAYFASI -->
+<section id="music" class="page">
+<button class="back-button" onclick="goBack()">← Geri dön</button>
+<h2 class="page-title">🎶 Bizim Şarkılarımız ❤️</h2>
+
+<div class="content-card">
+<p class="music-note">
+Birbirimize şarkılar önerelim. ❤️<br>
+Buraya eklediğiniz şarkılar ortak listede görünecek.
+</p>
+
+<form id="musicForm" class="music-form">
+<label for="musicOwner">Bu şarkıyı kim öneriyor?</label>
+<select id="musicOwner" required>
+<option value="fatma">🌸 Fatma'nın şarkıları</option>
+<option value="samet">❤️ Samet'in şarkıları</option>
+</select>
+
+<label for="musicTitle">Şarkının adı</label>
+<input id="musicTitle" type="text" maxlength="100" placeholder="Şarkının adını yaz" required>
+
+<label for="musicUrl">Spotify bağlantısı</label>
+<input id="musicUrl" type="url" maxlength="500" placeholder="https://open.spotify.com/track/..." required>
+
+<button id="musicAddButton" class="music-add-button" type="submit">➕ Şarkıyı Ekle ❤️</button>
+<p id="musicStatus" class="music-status" aria-live="polite">Ortak şarkı listesi yükleniyor...</p>
+</form>
+
+<h3 class="music-section-title">🌸 Fatma'nın şarkıları</h3>
+<div id="fatmaMusicList" class="music-list">
+<p class="music-status">Şarkılar yükleniyor...</p>
+</div>
+
+<h3 class="music-section-title">❤️ Samet'in şarkıları</h3>
+<div id="sametMusicList" class="music-list">
+<p class="music-status">Şarkılar yükleniyor...</p>
+</div>
+</div>
 </section>
 
 </main>
@@ -544,7 +588,7 @@ for(let i=0;i<18;i++)setTimeout(createHeart,i*300);
 setInterval(createHeart,650);
 </script>
 
-<!-- ORTAK GÜNLÜK VE FOTOĞRAF BAĞLANTISI -->
+<!-- ORTAK GÜNLÜK, FOTOĞRAF VE MÜZİK BAĞLANTISI -->
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 import {getDatabase,ref,onValue,set,push} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
@@ -569,11 +613,16 @@ const uploadButton=document.getElementById("uploadButton");
 const photoFileInput=document.getElementById("photoFile");
 const uploadStatus=document.getElementById("uploadStatus");
 const saveDiaryButton=document.getElementById("saveDiaryButton");
+const musicForm=document.getElementById("musicForm");
+const musicStatus=document.getElementById("musicStatus");
+const musicAddButton=document.getElementById("musicAddButton");
 let photoUploadInProgress=false;
 
 try{
 const app=initializeApp(firebaseConfig);
 const database=getDatabase(app);
+
+/* ORTAK GÜNLÜK */
 const diaryRef=ref(database,"diary");
 
 onValue(diaryRef,snapshot=>{
@@ -597,6 +646,7 @@ console.error(error);
 };
 saveDiaryButton.addEventListener("click",()=>window.saveDiary());
 
+/* ORTAK FOTOĞRAFLAR */
 const photosRef=ref(database,"photos");
 onValue(photosRef,snapshot=>{
 const data=snapshot.val()||{};
@@ -656,10 +706,136 @@ photoFileInput.value="";
 }
 });
 
+/* SPOTIFY MÜZİK ÖNERİLERİ */
+const musicRef=ref(database,"musicSuggestions");
+
+function getSpotifyEmbedUrl(value){
+try{
+const url=new URL(value.trim());
+if(url.protocol!=="https:"||!["open.spotify.com","www.spotify.com"].includes(url.hostname))return null;
+const match=url.pathname.match(/^\/(track|album|playlist|episode|show)\/([a-zA-Z0-9]+)\/?$/);
+if(!match)return null;
+return {
+embed:`https://open.spotify.com/embed/${match[1]}/${match[2]}`,
+original:url.href
+};
+}catch(error){
+return null;
+}
+}
+
+function renderMusicList(elementId,songs){
+const container=document.getElementById(elementId);
+container.replaceChildren();
+
+if(songs.length===0){
+const empty=document.createElement("p");
+empty.className="music-status";
+empty.textContent="Henüz şarkı eklenmemiş. İlk öneriyi sen yap! ❤️";
+container.appendChild(empty);
+return;
+}
+
+songs.forEach(song=>{
+const card=document.createElement("article");
+card.className="music-item";
+
+const title=document.createElement("h3");
+title.textContent="🎵 "+song.title;
+card.appendChild(title);
+
+const spotify=getSpotifyEmbedUrl(song.url);
+if(spotify){
+const player=document.createElement("iframe");
+player.src=spotify.embed;
+player.title=song.title+" - Spotify oynatıcı";
+player.loading="lazy";
+player.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+player.setAttribute("allowfullscreen","");
+card.appendChild(player);
+}
+
+const link=document.createElement("a");
+link.className="music-link";
+link.href=song.url;
+link.target="_blank";
+link.rel="noopener noreferrer";
+link.textContent="Spotify'da aç ↗";
+card.appendChild(link);
+
+container.appendChild(card);
+});
+}
+
+onValue(musicRef,snapshot=>{
+const data=snapshot.val()||{};
+const songs=Object.entries(data)
+.filter(([id,song])=>
+song&&
+typeof song.title==="string"&&
+typeof song.url==="string"&&
+(song.owner==="fatma"||song.owner==="samet")
+)
+.map(([id,song])=>({id,...song}))
+.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+
+renderMusicList("fatmaMusicList",songs.filter(song=>song.owner==="fatma"));
+renderMusicList("sametMusicList",songs.filter(song=>song.owner==="samet"));
+musicStatus.textContent="❤️ Ortak şarkı listesi güncel.";
+},error=>{
+console.error("Müzik listesi hatası:",error);
+musicStatus.textContent="Şarkılar yüklenemedi. Firebase veritabanı kurallarını kontrol et.";
+});
+
+musicForm.addEventListener("submit",async event=>{
+event.preventDefault();
+
+const owner=document.getElementById("musicOwner").value;
+const title=document.getElementById("musicTitle").value.trim();
+const url=document.getElementById("musicUrl").value.trim();
+
+if(!title||!url){
+musicStatus.textContent="Şarkı adını ve Spotify bağlantısını gir. ❤️";
+return;
+}
+
+if(title.length>100){
+musicStatus.textContent="Şarkı adı en fazla 100 karakter olabilir.";
+return;
+}
+
+if(!getSpotifyEmbedUrl(url)){
+musicStatus.textContent="Geçerli bir Spotify şarkı, albüm veya çalma listesi bağlantısı gir.";
+return;
+}
+
+musicAddButton.disabled=true;
+musicStatus.textContent="Şarkı ekleniyor...";
+
+try{
+await push(musicRef,{
+owner:owner,
+title:title,
+url:url,
+createdAt:Date.now()
+});
+
+document.getElementById("musicTitle").value="";
+document.getElementById("musicUrl").value="";
+musicStatus.textContent="❤️ Şarkı eklendi! Ortak listede görünecek.";
+}catch(error){
+console.error("Şarkı kaydetme hatası:",error);
+musicStatus.textContent="Şarkı kaydedilemedi. Firebase veritabanı izinlerini kontrol et.";
+}finally{
+musicAddButton.disabled=false;
+}
+});
+
 }catch(error){
 console.error(error);
 message.textContent="Ortak günlük bağlantısı kurulamadı.";
 uploadStatus.textContent="Fotoğraf bağlantısı kurulamadı.";
+musicStatus.textContent="Ortak müzik listesine bağlanılamadı. Firebase ayarlarını kontrol et.";
 uploadButton.disabled=true;
 window.saveDiary=function(){
 message.textContent="Bağlantı kurulamadığı için kayıt yapılamadı.";
@@ -667,7 +843,7 @@ message.textContent="Bağlantı kurulamadığı için kayıt yapılamadı.";
 }
 </script>
 
-<!-- MÜZİK -->
+<!-- ARKA PLAN MÜZİĞİ -->
 <audio id="muzik" src="IMG_2828_6.mp3" loop></audio>
 <button onclick="muzigiAc()" id="muzikButonu" aria-label="Müziği oynat veya duraklat">▶</button>
 
